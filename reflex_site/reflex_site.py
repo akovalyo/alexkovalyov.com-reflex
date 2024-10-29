@@ -1,14 +1,16 @@
 import reflex as rx
 
 from rxconfig import config
+from . import styles
+from .pages import *
 
 
-def index() -> rx.Component:
-    return rx.container(
-        rx.color_mode.button(position="top-right"),
-        rx.logo(),
-    )
-
-
-app = rx.App()
-app.add_page(index)
+app = rx.App(
+    style=styles.base_style,
+    stylesheets=styles.base_stylesheets,
+    html_lang="en",
+    theme=rx.theme(
+        appearance="inherit",
+        accent_color="tomato",
+    ),
+)
