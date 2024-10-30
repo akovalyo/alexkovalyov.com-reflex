@@ -1,6 +1,7 @@
 import reflex as rx
 from .. import styles
 from reflex.page import get_decorated_pages
+from ..components.footer import footer
 
 
 def menu_item_icon(icon: str) -> rx.Component:
@@ -103,6 +104,7 @@ def menu_button() -> rx.Component:
                         for page in ordered_pages
                     ],
                     rx.spacer(),
+                    footer(),
                     spacing="4",
                     width="100%",
                 ),
@@ -131,6 +133,7 @@ def navbar() -> rx.Component:
                 cursor="pointer",
             ),
             rx.spacer(),
+            rx.color_mode.button(style={"opacity": "0.8", "scale": "0.95"}),
             menu_button(),
             align="center",
             width="100%",
