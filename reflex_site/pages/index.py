@@ -7,7 +7,10 @@ def heading_resp() -> rx.Component:
     return rx.breakpoints(initial="4", xs="4", sm="4", md="5", lg="7", xl="7")
 
 
-@template(route="/")
+@template(
+    route="/",
+    title="Home",
+)
 def index() -> rx.Component:
     return rx.vstack(
         rx.image(

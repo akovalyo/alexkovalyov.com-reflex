@@ -1,7 +1,7 @@
 import reflex as rx
 from typing import Callable
 
-from ..components.footer import footer
+from ..components.navbar import navbar
 from .. import styles
 
 default_meta = [
@@ -29,8 +29,9 @@ def template(
         all_meta = [*default_meta, *(meta or [])]
 
         def templated_page():
-            return rx.flex(
+            return (
                 rx.flex(
+                    navbar(),
                     rx.flex(
                         rx.vstack(
                             page_content(),
@@ -51,8 +52,6 @@ def template(
                     margin="auto",
                     position="relative",
                 ),
-                footer(),
-                flex_direction="column",
             )
 
         @rx.page(
