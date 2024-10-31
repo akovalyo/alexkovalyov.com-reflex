@@ -167,16 +167,21 @@ def sidebar() -> rx.Component:
                 padding="0.35em",
                 margin_bottom="1em",
             ),
-            rx.vstack(
-                *[
-                    menu_item(
-                        text=page.get("title", page["route"].strip("/").capitalize()),
-                        url=page["route"],
-                    )
-                    for page in ordered_pages()
-                ],
-                spacing="1",
-                width="100%",
+            rx.flex(
+                rx.vstack(
+                    *[
+                        menu_item(
+                            text=page.get(
+                                "title", page["route"].strip("/").capitalize()
+                            ),
+                            url=page["route"],
+                        )
+                        for page in ordered_pages()
+                    ],
+                    spacing="1",
+                    width="100%",
+                ),
+                justify="end",
             ),
             rx.spacer(),
             footer(),
