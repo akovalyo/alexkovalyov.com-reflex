@@ -9,15 +9,14 @@ def menu_item_icon(icon: str) -> rx.Component:
 
 
 def menu_item(text: str, url: str) -> rx.Component:
-    active = (rx.State.router.page.path == url.lower()) | (
-        (rx.State.router.page.path == "/") & text == "Home"
-    )
+    active = rx.State.router.page.path == url.lower()
 
     return rx.link(
         rx.hstack(
             rx.match(
                 text,
                 ("Home", menu_item_icon("home")),
+                ("Projects", menu_item_icon("home")),
             ),
             rx.text(text, size="4", weight="regular"),
             color=rx.cond(
@@ -57,9 +56,10 @@ def menu_item(text: str, url: str) -> rx.Component:
     )
 
 
-def menu_button() -> rx.Component:
+def ordered_pages() -> list:
     ordered_page_routes = [
         "/",
+        "/projects",
     ]
     pages = get_decorated_pages()
     ordered_pages = sorted(
@@ -70,7 +70,10 @@ def menu_button() -> rx.Component:
             else len(ordered_page_routes)
         ),
     )
+    return ordered_pages
 
+
+def navbar_menu_button() -> rx.Component:
     return rx.drawer.root(
         rx.drawer.trigger(
             rx.icon(
@@ -101,7 +104,7 @@ def menu_button() -> rx.Component:
                             ),
                             url=page["route"],
                         )
-                        for page in ordered_pages
+                        for page in ordered_pages()
                     ],
                     rx.spacer(),
                     footer(),
@@ -121,20 +124,24 @@ def menu_button() -> rx.Component:
     )
 
 
+def logo() -> rx.Component:
+    return rx.link(
+        rx.color_mode_cond(
+            rx.image(src="/ak_gray.svg", height="2em"),
+            rx.image(src="/ak_white.svg", height="2em"),
+        ),
+        on_click=rx.redirect("/"),
+        cursor="pointer",
+    )
+
+
 def navbar() -> rx.Component:
     return rx.el.nav(
         rx.hstack(
-            rx.link(
-                rx.color_mode_cond(
-                    rx.image(src="/ak_gray.svg", height="2em"),
-                    rx.image(src="/ak_white.svg", height="2em"),
-                ),
-                on_click=rx.redirect("/"),
-                cursor="pointer",
-            ),
+            logo(),
             rx.spacer(),
             rx.color_mode.button(style={"opacity": "0.8", "scale": "0.95"}),
-            menu_button(),
+            navbar_menu_button(),
             align="center",
             width="100%",
             padding_y="1em",
@@ -145,5 +152,48 @@ def navbar() -> rx.Component:
         background_color=rx.color("gray", 1),
         top="0px",
         z_index="5",
-        border_bottom=styles.border,
+        # border_bottom=styles.border,
+    )
+
+
+def sidebar() -> rx.Component:
+    return rx.flex(
+        rx.vstack(
+            rx.hstack(
+                rx.spacer(),
+                logo(),
+                align="center",
+                width="100%",
+                padding="0.35em",
+                margin_bottom="1em",
+            ),
+            rx.vstack(
+                *[
+                    menu_item(
+                        text=page.get("title", page["route"].strip("/").capitalize()),
+                        url=page["route"],
+                    )
+                    for page in ordered_pages()
+                ],
+                spacing="1",
+                width="100%",
+            ),
+            rx.spacer(),
+            footer(),
+            justify="end",
+            align="end",
+            width=styles.sidebar_content_width,
+            height="100dvh",
+            padding="1em",
+        ),
+        display=["none", "none", "none", "none", "none", "flex"],
+        max_width=styles.sidebar_width,
+        width="auto",
+        height="100%",
+        position="sticky",
+        justify="end",
+        top="0px",
+        left="0px",
+        flex="1",
+        bg=rx.color("gray", 2),
     )

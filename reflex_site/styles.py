@@ -6,6 +6,9 @@ text_color = rx.color("gray", 11)
 accent_text_color = rx.color("accent", 10)
 accent_bg_color = rx.color("accent", 3)
 gray_bg_color = rx.color("gray", 3)
+sidebar_width = "32em"
+sidebar_content_width = "16em"
+max_width = "1480px"
 
 base_stylesheets = [
     "https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap",

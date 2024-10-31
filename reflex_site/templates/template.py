@@ -1,7 +1,7 @@
 import reflex as rx
 from typing import Callable
-
-from ..components.navbar import navbar
+from ..components.bar import navbar
+from ..components.bar import sidebar
 from .. import styles
 
 default_meta = [
@@ -32,6 +32,7 @@ def template(
             return (
                 rx.flex(
                     navbar(),
+                    sidebar(),
                     rx.flex(
                         rx.vstack(
                             page_content(),
