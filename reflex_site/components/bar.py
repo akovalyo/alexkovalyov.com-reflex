@@ -149,7 +149,7 @@ def navbar() -> rx.Component:
         ),
         display=["block", "block", "block", "block", "block", "none"],
         position="sticky",
-        background_color=rx.color("gray", 1),
+        background_color=rx.color("gray", 4),
         top="0px",
         z_index="5",
         # border_bottom=styles.border,
@@ -160,6 +160,7 @@ def sidebar() -> rx.Component:
     return rx.flex(
         rx.vstack(
             rx.hstack(
+                rx.color_mode.button(style={"opacity": "0.8", "scale": "0.95"}),
                 rx.spacer(),
                 logo(),
                 align="center",
@@ -167,21 +168,25 @@ def sidebar() -> rx.Component:
                 padding="0.35em",
                 margin_bottom="1em",
             ),
-            rx.flex(
-                rx.vstack(
-                    *[
-                        menu_item(
-                            text=page.get(
-                                "title", page["route"].strip("/").capitalize()
-                            ),
-                            url=page["route"],
-                        )
-                        for page in ordered_pages()
-                    ],
-                    spacing="1",
-                    width="100%",
+            rx.cond(
+                rx.State.router.page.path != "/",
+                rx.flex(
+                    rx.vstack(
+                        *[
+                            menu_item(
+                                text=page.get(
+                                    "title", page["route"].strip("/").capitalize()
+                                ),
+                                url=page["route"],
+                            )
+                            for page in ordered_pages()
+                        ],
+                        spacing="1",
+                        width="100%",
+                    ),
+                    justify="end",
                 ),
-                justify="end",
+                None,
             ),
             rx.spacer(),
             footer(),
@@ -200,5 +205,5 @@ def sidebar() -> rx.Component:
         top="0px",
         left="0px",
         flex="1",
-        bg=rx.color("gray", 2),
+        bg=rx.color("gray", 4),
     )
