@@ -1,10 +1,21 @@
 import reflex as rx
 
 from ..templates import template
+from .. import styles
 
 
-def heading_resp() -> rx.Component:
-    return rx.breakpoints(initial="4", xs="4", sm="4", md="5", lg="7", xl="7")
+def main_button(title: str, href: str) -> rx.Component:
+    return rx.button(
+        title,
+        variant="surface",
+        radius="full",
+        on_click=rx.redirect(href),
+        cursor="pointer",
+        height=["35px", "35px", "40px", "50px", "50px"],
+        width=["100px", "100px", "110px", "120px", "120px"],
+        font_size=["1em", "1em", "1.25em", "1.4em", "1.4em"],
+        font_weight="200",
+    )
 
 
 @template(
@@ -19,8 +30,23 @@ def index() -> rx.Component:
             align="center",
             height="auto",
         ),
-        rx.heading("Hello, I'm Alex.", size=heading_resp(), padding_top="1em"),
-        rx.heading("I'm a software developer.", size=heading_resp()),
+        rx.heading(
+            "Hello, I'm Alex.",
+            font_size=styles.main_page_font_size,
+            font_weight="400",
+            padding_top="1em",
+        ),
+        rx.heading(
+            "I'm a software developer.",
+            font_size=styles.main_page_font_size,
+            font_weight="400",
+        ),
+        rx.vstack(
+            main_button("Projects", "/projects"),
+            main_button("Blog", "/projects"),
+            padding_top="2em",
+            spacing="4",
+        ),
         width="100%",
         align="center",
     )

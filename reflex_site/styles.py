@@ -21,3 +21,5 @@ template_content_style = {
     "margin_bottom": "1em",
     "min_height": "85vh",
 }
+
+main_page_font_size = ["1em", "1.25em", "1.5em", "1.75em", "1.75em"]
