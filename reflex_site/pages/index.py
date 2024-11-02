@@ -2,24 +2,27 @@ import reflex as rx
 
 from ..templates import template
 from .. import styles
+from ..navigation import routes
 
 
 def main_button(title: str, href: str) -> rx.Component:
-    return rx.button(
-        title,
-        variant="surface",
-        radius="full",
-        on_click=rx.redirect(href),
-        cursor="pointer",
-        height=["35px", "35px", "40px", "50px", "50px"],
-        width=["100px", "100px", "110px", "120px", "120px"],
-        font_size=["1em", "1em", "1.25em", "1.4em", "1.4em"],
-        font_weight="200",
+    return rx.link(
+        rx.button(
+            title,
+            variant="surface",
+            radius="full",
+            height=["35px", "35px", "40px", "50px", "50px"],
+            width=["100px", "100px", "110px", "120px", "120px"],
+            font_size=["1em", "1em", "1.25em", "1.4em", "1.4em"],
+            font_weight="200",
+            cursor="pointer",
+        ),
+        href=href,
     )
 
 
 @template(
-    route="/",
+    route=routes.HOME_ROUTE,
     title="Home",
 )
 def index() -> rx.Component:
@@ -42,8 +45,8 @@ def index() -> rx.Component:
             font_weight="400",
         ),
         rx.vstack(
-            main_button("Projects", "/projects"),
-            main_button("Blog", "/projects"),
+            main_button("Projects", routes.PROJECTS_ROUTE),
+            main_button("Blog", routes.BLOG_ROUTE),
             padding_top="2em",
             spacing="4",
         ),
