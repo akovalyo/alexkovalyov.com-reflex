@@ -2,6 +2,7 @@ import reflex as rx
 from .. import styles
 from reflex.page import get_decorated_pages
 from ..components.footer import footer
+from ..navigation import routes
 
 
 def menu_item_icon(icon: str) -> rx.Component:
@@ -58,8 +59,9 @@ def menu_item(text: str, url: str) -> rx.Component:
 
 def ordered_pages() -> list:
     ordered_page_routes = [
-        "/",
-        "/projects",
+        routes.HOME_ROUTE,
+        routes.PROJECTS_ROUTE,
+        routes.BLOG_ROUTE,
     ]
     pages = get_decorated_pages()
     ordered_pages = sorted(
@@ -130,7 +132,7 @@ def logo() -> rx.Component:
             rx.image(src="/ak_gray.svg", height="2em"),
             rx.image(src="/ak_white.svg", height="2em"),
         ),
-        on_click=rx.redirect("/"),
+        on_click=rx.redirect(routes.HOME_ROUTE),
         cursor="pointer",
     )
 
@@ -169,7 +171,7 @@ def sidebar() -> rx.Component:
                 margin_bottom="1em",
             ),
             rx.cond(
-                rx.State.router.page.path != "/",
+                rx.State.router.page.path != routes.HOME_ROUTE,
                 rx.flex(
                     rx.vstack(
                         *[

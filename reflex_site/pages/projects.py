@@ -1,10 +1,11 @@
 import reflex as rx
 
 from ..templates import template
+from ..navigation import routes
 
 
 @template(
-    route="/projects",
+    route=routes.PROJECTS_ROUTE,
     title="Projects",
 )
 def projects() -> rx.Component:
