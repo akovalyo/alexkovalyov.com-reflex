@@ -7,6 +7,7 @@ text_color = rx.color("gray", 11)
 accent_text_color = rx.color("accent", 10)
 accent_bg_color = rx.color("accent", 3)
 gray_bg_color = rx.color("gray", 3)
+bar_color = rx.color("gray", 4)
 sidebar_width = "32em"
 sidebar_content_width = "16em"
 
@@ -25,5 +26,6 @@ template_content_style = {
 
 main_page_font_size = ["1em", "1.25em", "1.5em", "1.75em", "1.75em"]
 
-card_width = ["70vw", "60vw", "200px", "220px", "260px"]
-card_height = ["70vw", "60vw", "200px", "220px", "260px"]
+card_project_width = ["70vw", "60vw", "200px", "220px", "260px"]
+card_blog_width = ["70vw", "60vw", "240px", "260px", "300px"]
+card_blog_height = ["42vw", "36vw", "120px", "132px", "156px"]

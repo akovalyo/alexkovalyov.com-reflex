@@ -5,6 +5,16 @@ from ..components.footer import footer
 from ..navigation import routes
 
 
+def menu_items():
+    paths = [
+        routes.HOME_ROUTE,
+        routes.PROJECTS_ROUTE,
+        routes.BLOG_ROUTE,
+    ]
+    titles = [path.strip("/").capitalize() if path != "/" else "Home" for path in paths]
+    return titles, paths
+
+
 def menu_item_icon(icon: str) -> rx.Component:
     return rx.icon(icon, size=20)
 
@@ -17,7 +27,8 @@ def menu_item(text: str, url: str) -> rx.Component:
             rx.match(
                 text,
                 ("Home", menu_item_icon("home")),
-                ("Projects", menu_item_icon("home")),
+                ("Projects", menu_item_icon("folder-kanban")),
+                ("Blog", menu_item_icon("notebook-text")),
             ),
             rx.text(text, size="4", weight="regular"),
             color=rx.cond(
@@ -57,25 +68,8 @@ def menu_item(text: str, url: str) -> rx.Component:
     )
 
 
-def ordered_pages() -> list:
-    ordered_page_routes = [
-        routes.HOME_ROUTE,
-        routes.PROJECTS_ROUTE,
-        routes.BLOG_ROUTE,
-    ]
-    pages = get_decorated_pages()
-    ordered_pages = sorted(
-        pages,
-        key=lambda page: (
-            ordered_page_routes.index(page["route"])
-            if page["route"] in ordered_page_routes
-            else len(ordered_page_routes)
-        ),
-    )
-    return ordered_pages
-
-
 def navbar_menu_button() -> rx.Component:
+    titles, paths = menu_items()
     return rx.drawer.root(
         rx.drawer.trigger(
             rx.icon(
@@ -101,12 +95,10 @@ def navbar_menu_button() -> rx.Component:
                     rx.divider(),
                     *[
                         menu_item(
-                            text=page.get(
-                                "title", page["route"].strip("/").capitalize()
-                            ),
-                            url=page["route"],
+                            text=title,
+                            url=path,
                         )
-                        for page in ordered_pages()
+                        for title, path in zip(titles, paths)
                     ],
                     rx.spacer(),
                     footer(),
@@ -151,14 +143,14 @@ def navbar() -> rx.Component:
         ),
         display=["block", "block", "block", "block", "block", "none"],
         position="sticky",
-        background_color=rx.color("gray", 4),
+        background_color=styles.bar_color,
         top="0px",
         z_index="5",
-        # border_bottom=styles.border,
     )
 
 
 def sidebar() -> rx.Component:
+    titles, paths = menu_items()
     return rx.flex(
         rx.vstack(
             rx.hstack(
@@ -170,25 +162,19 @@ def sidebar() -> rx.Component:
                 padding="0.35em",
                 margin_bottom="1em",
             ),
-            rx.cond(
-                rx.State.router.page.path != routes.HOME_ROUTE,
-                rx.flex(
-                    rx.vstack(
-                        *[
-                            menu_item(
-                                text=page.get(
-                                    "title", page["route"].strip("/").capitalize()
-                                ),
-                                url=page["route"],
-                            )
-                            for page in ordered_pages()
-                        ],
-                        spacing="1",
-                        width="100%",
-                    ),
-                    justify="end",
+            rx.flex(
+                rx.vstack(
+                    *[
+                        menu_item(
+                            text=title,
+                            url=path,
+                        )
+                        for title, path in zip(titles, paths)
+                    ],
+                    spacing="1",
+                    width="100%",
                 ),
-                None,
+                justify="end",
             ),
             rx.spacer(),
             footer(),
@@ -207,5 +193,5 @@ def sidebar() -> rx.Component:
         top="0px",
         left="0px",
         flex="1",
-        bg=rx.color("gray", 4),
+        bg=styles.bar_color,
     )

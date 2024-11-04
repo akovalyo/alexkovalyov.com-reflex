@@ -5,6 +5,7 @@ from .. import styles
 
 
 def project_card(item: Project) -> rx.Component:
+
     return rx.box(
         rx.vstack(
             rx.box(
@@ -19,7 +20,7 @@ def project_card(item: Project) -> rx.Component:
                 "",
                 background=f"center/cover url('{item.image}')",
                 width="100%",
-                height=styles.card_height,
+                height=styles.card_project_width,
             ),
             rx.flex(
                 rx.text(
@@ -34,11 +35,13 @@ def project_card(item: Project) -> rx.Component:
             ),
             height="100%",
             gap="0",
+            bg=styles.bar_color,
+            border_radius="13px",
         ),
-        width=styles.card_width,
+        width=styles.card_project_width,
         height="auto",
         border=styles.border,
-        border_radius="var(--radius-4)",
+        border_radius="15px",
         _hover={
             "border_color": styles.accent_text_color,
             "opacity": 0.8,
@@ -47,7 +50,49 @@ def project_card(item: Project) -> rx.Component:
 
 
 def blog_card(item: Blog) -> rx.Component:
-    return rx.box()
+    return rx.box(
+        rx.vstack(
+            rx.image(
+                src=item.image,
+                width="100%",
+                border_radius="13px 13px 0 0",
+                height=styles.card_blog_height,
+                object_fit="cover",
+            ),
+            rx.flex(
+                rx.heading(
+                    item.title,
+                    align="center",
+                    size="4",
+                    padding_bottom="5px",
+                ),
+                rx.text(
+                    item.description,
+                    align="center",
+                    size="3",
+                    font_weight="100",
+                ),
+                direction="column",
+                width="100%",
+                padding="5px",
+                height="auto",
+                align="center",
+                justify="center",
+                bg=styles.bar_color,
+                border_radius="0 0 13px 13px",
+            ),
+            height="100%",
+            gap="0",
+        ),
+        width=styles.card_blog_width,
+        height="auto",
+        border=styles.border,
+        border_radius="15px",
+        _hover={
+            "border_color": styles.accent_text_color,
+            "opacity": 0.8,
+        },
+    )
 
 
 def grid(items: List[Blog] | List[Project]) -> rx.Component:
@@ -55,7 +100,7 @@ def grid(items: List[Blog] | List[Project]) -> rx.Component:
         rx.foreach(
             items,
             lambda item: rx.cond(
-                item.type == "project", project_card(item), blog_card(item)
+                item.category == "project", project_card(item), blog_card(item)
             ),
         ),
         direction="row",

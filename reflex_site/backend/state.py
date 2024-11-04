@@ -1,9 +1,10 @@
 import reflex as rx
 from typing import List
+from datetime import datetime
 
 
 class Project(rx.Base):
-    type: str
+    category: str
     title: str
     description: str
     link: str
@@ -11,16 +12,18 @@ class Project(rx.Base):
     image: str
     link_secondary: str
     link_secondary_title: str
+    date: str
 
 
 class Blog(rx.Base):
-    type: str
+    category: str
     title: str
     description: str
     link: str
     image: str
     content: str
     date: str
+    date_f: str = ""
 
 
 class State(rx.State):
@@ -31,7 +34,7 @@ class State(rx.State):
         # load from db
         db_projects = [
             {
-                "type": "blog",
+                "category": "project",
                 "title": "Flutter",
                 "description": "Android app for an NFT project made in Flutter",
                 "link": "https://github.com/akovalyo/wcdonalds_app",
@@ -39,9 +42,10 @@ class State(rx.State):
                 "image": "/projects/flutter_app.jpg",
                 "link_secondary": "",
                 "link_secondary_title": "",
+                "date": "2024-11-04T20:30:22.352057+00:00",
             },
             {
-                "type": "project",
+                "category": "project",
                 "title": "CSS",
                 "description": "CSS animation",
                 "link": "https://codepen.io/akovalyo/full/WNporeY",
@@ -49,9 +53,10 @@ class State(rx.State):
                 "image": "/projects/css_tree.png",
                 "link_secondary": "",
                 "link_secondary_title": "",
+                "date": "2024-11-04T20:30:22.352057+00:00",
             },
             {
-                "type": "project",
+                "category": "project",
                 "title": "React + Flask",
                 "description": "Place to find local grown fruits and vegetables",
                 "link": "https://github.com/akovalyo/instaHarvest",
@@ -59,9 +64,10 @@ class State(rx.State):
                 "image": "/projects/instaharvest.png",
                 "link_secondary": "",
                 "link_secondary_title": "",
+                "date": "2024-11-04T20:30:22.352057+00:00",
             },
             {
-                "type": "project",
+                "category": "project",
                 "title": "Flutter Web",
                 "description": "The website built in Flutter",
                 "link": "https://github.com/akovalyo/alexkovalyov.com-flutter",
@@ -69,9 +75,10 @@ class State(rx.State):
                 "image": "/projects/project_1.png",
                 "link_secondary": "",
                 "link_secondary_title": "",
+                "date": "2024-11-04T20:30:22.352057+00:00",
             },
             {
-                "type": "project",
+                "category": "project",
                 "title": "C",
                 "description": "Recreating a real shell in C",
                 "link": "https://github.com/akovalyo/42sv_minishell",
@@ -79,9 +86,10 @@ class State(rx.State):
                 "image": "/projects/project_minishell.png",
                 "link_secondary": "",
                 "link_secondary_title": "",
+                "date": "2024-11-04T20:30:22.352057+00:00",
             },
             {
-                "type": "project",
+                "category": "project",
                 "title": "AI Project",
                 "description": "Identifying white blood cells using CNN with Pytorch",
                 "link": "https://github.com/akovalyo/wbc_classification",
@@ -89,7 +97,26 @@ class State(rx.State):
                 "image": "/projects/blood.png",
                 "link_secondary": "",
                 "link_secondary_title": "",
+                "date": "2024-11-04T20:30:22.352057+00:00",
             },
         ]
 
         self.projects = [Project(**item) for item in db_projects]
+
+    def load_blog(self):
+        # load from db
+        db_blog = [
+            {
+                "category": "blog",
+                "title": "Python and Env Cheat Sheet",
+                "description": "Managing python environments",
+                "link": "https://github.com/akovalyo/wcdonalds_app",
+                "image": "/python.png",
+                "content": "text",
+                "date": "2024-11-04T20:30:22.352057+00:00",
+            },
+        ]
+
+        self.blog = [Blog(**item) for item in db_blog]
+        for item in self.blog:
+            item.date_f = datetime.fromisoformat(item.date).strftime("%Y-%m-%d")
