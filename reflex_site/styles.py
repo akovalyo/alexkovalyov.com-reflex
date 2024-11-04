@@ -1,7 +1,8 @@
 import reflex as rx
 
 border_radius = "var(--radius-2)"
-border = f"1px solid {rx.color('gray', 5)}"
+border = f"2px solid {rx.color("accent", 3)}"
+heading_color = rx.color("gray", 12)
 text_color = rx.color("gray", 11)
 accent_text_color = rx.color("accent", 10)
 accent_bg_color = rx.color("accent", 3)
@@ -23,3 +24,6 @@ template_content_style = {
 }
 
 main_page_font_size = ["1em", "1.25em", "1.5em", "1.75em", "1.75em"]
+
+card_width = ["70vw", "60vw", "200px", "220px", "260px"]
+card_height = ["70vw", "60vw", "200px", "220px", "260px"]

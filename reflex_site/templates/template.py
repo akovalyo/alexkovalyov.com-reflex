@@ -24,6 +24,7 @@ def template(
     title: str | None = None,
     description: str | None = None,
     meta: str | None = None,
+    on_load: rx.event.EventHandler | list[rx.event.EventHandler] | None = None,  # type: ignore
 ) -> Callable[[Callable[[], rx.Component]], rx.Component]:
     def decorator(page_content: Callable[[], rx.Component]) -> rx.Component:
         all_meta = [*default_meta, *(meta or [])]
@@ -60,6 +61,7 @@ def template(
             title=title,
             description=description,
             meta=all_meta,
+            on_load=on_load,
         )
         def theme_wrap():
             return rx.theme(
