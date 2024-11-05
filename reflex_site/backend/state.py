@@ -2,6 +2,7 @@ import reflex as rx
 from typing import List
 from datetime import datetime, timezone
 from ..backend.models import BlogPost, Project
+from ..backend.utils import convert_str_to_datetime
 from sqlmodel import select
 
 
@@ -92,11 +93,9 @@ class State(rx.State):
     ]
 
     def load_projects(self):
-        pass
-        # load from db
-        # db_projects = self.db_projects
-
-        # self.projects = [Project(**item) for item in db_projects]
+        with rx.session() as session:
+            projects = session.exec(select(Project)).all()
+            self.projects = projects
 
     def load_blog_posts(self):
         with rx.session() as session:
@@ -104,22 +103,22 @@ class State(rx.State):
             posts = session.exec(select(BlogPost)).all()
             self.blog_posts = posts
 
+    def handle_project_submit(self, form_data: dict):
+        data = {"category": "blog"}
+        for k, v in form_data.items():
+            if k == "created_at":
+                v = convert_str_to_datetime(form_data["created_at"])
+            data[k] = v
+        with rx.session() as session:
+            db_entry = Project(**data)
+            session.add(db_entry)
+            session.commit()
+
     def handle_blog_post_submit(self, form_data: dict):
         data = {"category": "blog"}
         for k, v in form_data.items():
             if k == "created_at":
-                if not form_data["created_at"]:
-                    v = datetime.now(timezone.utc)
-                else:
-                    v = datetime(
-                        *[
-                            int(num)
-                            for num in form_data["created_at"].split(
-                                "-",
-                            )
-                        ],
-                        tzinfo=timezone.utc,
-                    )
+                v = convert_str_to_datetime(form_data["created_at"])
             data[k] = v
         with rx.session() as session:
             db_entry = BlogPost(**data)
