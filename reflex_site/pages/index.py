@@ -3,22 +3,7 @@ import reflex as rx
 from ..templates import template
 from .. import styles
 from ..navigation import routes
-
-
-def main_button(title: str, href: str) -> rx.Component:
-    return rx.link(
-        rx.button(
-            title,
-            variant="surface",
-            radius="full",
-            height=["35px", "35px", "40px", "50px", "50px"],
-            width=["100px", "100px", "110px", "120px", "120px"],
-            font_size=["1em", "1em", "1.25em", "1.4em", "1.4em"],
-            font_weight="200",
-            cursor="pointer",
-        ),
-        href=href,
-    )
+from ..components.buttons import main_button
 
 
 @template(

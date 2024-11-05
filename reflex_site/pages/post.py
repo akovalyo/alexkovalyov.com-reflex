@@ -2,7 +2,6 @@ import reflex as rx
 
 from ..templates import template
 from ..navigation import routes
-from ..components.grid import *
 from ..backend.state import State
 from .. import styles
 

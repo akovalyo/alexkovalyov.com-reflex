@@ -5,7 +5,6 @@ from sqlmodel import Field
 
 
 class BlogPost(rx.Model, table=True):
-    category: str
     title: str
     description: str
     image: str
@@ -20,13 +19,12 @@ class BlogPost(rx.Model, table=True):
 
 
 class Project(rx.Model, table=True):
-    category: str
     title: str
     description: str
-    link: str | None = None
-    link_title: str | None = None
-    link_secondary: str | None = None
-    link_secondary_title: str | None = None
+    url: str | None = None
+    url_title: str | None = None
+    url_secondary: str | None = None
+    url_secondary_title: str | None = None
     image: str
     created_at: datetime = Field(
         default_factory=datetime.now(timezone.utc),

@@ -96,6 +96,9 @@ class State(rx.State):
         with rx.session() as session:
             projects = session.exec(select(Project)).all()
             self.projects = projects
+        # print(self.projects)
+        # pr = self.projects[0]
+        # print(pr.category)
 
     def load_blog_posts(self):
         with rx.session() as session:
@@ -104,7 +107,7 @@ class State(rx.State):
             self.blog_posts = posts
 
     def handle_project_submit(self, form_data: dict):
-        data = {"category": "blog"}
+        data = {}
         for k, v in form_data.items():
             if k == "created_at":
                 v = convert_str_to_datetime(form_data["created_at"])
@@ -115,7 +118,7 @@ class State(rx.State):
             session.commit()
 
     def handle_blog_post_submit(self, form_data: dict):
-        data = {"category": "blog"}
+        data = {}
         for k, v in form_data.items():
             if k == "created_at":
                 v = convert_str_to_datetime(form_data["created_at"])

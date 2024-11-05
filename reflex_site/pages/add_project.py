@@ -2,13 +2,12 @@ import reflex as rx
 
 from ..templates import template
 from ..navigation import routes
-from ..components.grid import *
 from ..backend.state import State
 from .. import styles
 
 
 @template(
-    route=routes.ADD_BLOG_POST_ROUT,
+    route=routes.ADD_PROJECT_ROUT,
     title="Add Project",
 )
 def add_project() -> rx.Component:
@@ -46,29 +45,29 @@ def add_project() -> rx.Component:
                         width="100%",
                     ),
                     rx.input(
-                        name="link",
-                        placeholder="Link",
+                        name="url",
+                        placeholder="Url",
                         required=False,
                         type="text",
                         width="100%",
                     ),
                     rx.input(
-                        name="link_title",
-                        placeholder="Link Title",
+                        name="url_title",
+                        placeholder="Url Title",
                         required=False,
                         type="text",
                         width="100%",
                     ),
                     rx.input(
-                        name="link_secondary",
-                        placeholder="Secondary Link",
+                        name="url_secondary",
+                        placeholder="Secondary Url",
                         required=False,
                         type="text",
                         width="100%",
                     ),
                     rx.input(
-                        name="link_secondary_title",
-                        placeholder="Secondary Link Title",
+                        name="url_secondary_title",
+                        placeholder="Secondary Url Title",
                         required=False,
                         type="text",
                         width="100%",
