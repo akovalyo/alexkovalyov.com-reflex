@@ -5,7 +5,6 @@ from ..navigation import routes
 from ..components.grid import *
 from ..backend.state import State
 from .. import styles
-from ..backend.state import State
 
 
 @template(

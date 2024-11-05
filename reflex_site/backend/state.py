@@ -1,25 +1,13 @@
 import reflex as rx
 from typing import List
 from datetime import datetime, timezone
-from ..backend.models import BlogPostModel
+from ..backend.models import BlogPost, Project
 from sqlmodel import select
-
-
-class Project(rx.Base):
-    category: str
-    title: str
-    description: str
-    link: str
-    link_title: str
-    image: str
-    link_secondary: str
-    link_secondary_title: str
-    date: str
 
 
 class State(rx.State):
     projects: List[Project] = []
-    blog_posts: List[BlogPostModel] = []
+    blog_posts: List[BlogPost] = []
 
     # DATABASE
     db_projects = [
@@ -96,7 +84,7 @@ class State(rx.State):
             "category": "blog",
             "title": "Python and Env Cheat Sheet",
             "description": "Managing python environments",
-            "image": "/python.png",
+            "image": "https://i.imgur.com/ES12BPi.png",
             "content": "text",
             "date": "2024-11-04T20:30:22.352057+00:00",
             "address": "2021-01-26-python",
@@ -104,10 +92,17 @@ class State(rx.State):
     ]
 
     def load_projects(self):
+        pass
         # load from db
-        db_projects = self.db_projects
+        # db_projects = self.db_projects
 
-        self.projects = [Project(**item) for item in db_projects]
+        # self.projects = [Project(**item) for item in db_projects]
+
+    def load_blog_posts(self):
+        with rx.session() as session:
+            # session.exec(select(BlogPost).order_by(BlogPost.created_at.desc()).limit(4)).all()
+            posts = session.exec(select(BlogPost)).all()
+            self.blog_posts = posts
 
     def handle_blog_post_submit(self, form_data: dict):
         data = {"category": "blog"}
@@ -127,14 +122,9 @@ class State(rx.State):
                     )
             data[k] = v
         with rx.session() as session:
-            db_entry = BlogPostModel(**data)
+            db_entry = BlogPost(**data)
             session.add(db_entry)
             session.commit()
-
-    def load_blog_posts(self):
-        with rx.session() as session:
-            posts = session.exec(select(BlogPostModel)).all()
-            self.blog_posts = posts
 
     # @rx.var
     # def load_post(self):

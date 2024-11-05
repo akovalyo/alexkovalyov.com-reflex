@@ -1,7 +1,6 @@
 import reflex as rx
 from typing import List
-from ..backend.state import Project
-from ..backend.models import BlogPostModel
+from ..backend.models import BlogPost, Project
 from .. import styles
 
 
@@ -50,7 +49,7 @@ def project_card(item: Project) -> rx.Component:
     )
 
 
-def blog_card(item: BlogPostModel) -> rx.Component:
+def blog_card(item: BlogPost) -> rx.Component:
     return rx.box(
         rx.vstack(
             rx.image(
@@ -96,7 +95,7 @@ def blog_card(item: BlogPostModel) -> rx.Component:
     )
 
 
-def grid(items: List[BlogPostModel] | List[Project]) -> rx.Component:
+def grid(items: List[BlogPost] | List[Project]) -> rx.Component:
     return rx.flex(
         rx.foreach(
             items,
