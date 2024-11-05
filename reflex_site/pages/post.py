@@ -8,15 +8,14 @@ from .. import styles
 
 
 @template(
-    route=routes.PROJECTS_ROUTE,
-    title="Projects",
-    on_load=State.load_projects,
+    route="/blog/[address]",
+    title="Blog",
 )
-def projects() -> rx.Component:
-    return rx.vstack(
+def post() -> rx.Component:
+    return (
         rx.vstack(
             rx.heading(
-                "PROJECTS",
+                f"BLOG {rx.State.address}",
                 size="7",
                 padding_top="2em",
                 padding_bottom="0",
@@ -26,10 +25,10 @@ def projects() -> rx.Component:
                 height="5px",
                 bg=styles.heading_color,
             ),
+            rx.text(
+                "",
+            ),
             gap="0",
             padding_bottom="1em",
         ),
-        grid(State.projects),
-        width="100%",
-        align="center",
     )

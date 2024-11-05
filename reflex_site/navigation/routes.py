@@ -1,3 +1,4 @@
 HOME_ROUTE = "/"
 PROJECTS_ROUTE = "/projects"
 BLOG_ROUTE = "/blog"
+ADD_BLOG_POST_ROUT = "/add_blog"

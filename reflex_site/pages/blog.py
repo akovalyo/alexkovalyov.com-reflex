@@ -10,7 +10,7 @@ from .. import styles
 @template(
     route=routes.BLOG_ROUTE,
     title="Blog",
-    on_load=State.load_blog,
+    on_load=State.load_blog_posts,
 )
 def blog() -> rx.Component:
     return rx.vstack(
@@ -26,11 +26,10 @@ def blog() -> rx.Component:
                 height="5px",
                 bg=styles.heading_color,
             ),
-            id="test",
             gap="0",
             padding_bottom="1em",
         ),
-        grid(State.blog),
+        grid(State.blog_posts),
         width="100%",
         align="center",
     )

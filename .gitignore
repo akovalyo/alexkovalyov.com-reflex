@@ -5,3 +5,5 @@
 .web
 __pycache__/
 assets/external/
+alembic/
+alembic.ini
