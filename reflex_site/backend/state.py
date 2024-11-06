@@ -21,6 +21,7 @@ class State(rx.State):
 class BlogPostState(State):
     blog_posts: List["BlogPost"] = []
     blog_post: BlogPost | None
+    blog_post_is_loading: bool = True
 
     @rx.var(cache=True)
     def _blog_post_address(self):
@@ -56,14 +57,18 @@ class BlogPostState(State):
             self.blog_posts = res
 
     def get_blog_post(self):
+        self.blog_post_is_loading = True
         with rx.session() as session:
             if self._blog_post_address == "":
                 self.blog_post = None
-                return
+                return rx.redirect(routes.PAGE_404_ROUTE)
             res = session.exec(
                 select(BlogPost).where(BlogPost.address == self._blog_post_address)
             ).one_or_none()
+            if not res:
+                return rx.redirect(routes.PAGE_404_ROUTE)
             self.blog_post = res
+            self.blog_post_is_loading = False
 
     def add_blog_post(self, form_data: dict):
         data = add_datetime_to_form_data(form_data)
@@ -72,6 +77,7 @@ class BlogPostState(State):
             session.add(db_entry)
             session.commit()
         self.clear_current_blog_post()
+        return rx.redirect(routes.BLOG_ROUTE)
 
     def edit_blog_post(self, form_data: dict):
         data = add_datetime_to_form_data(form_data)
