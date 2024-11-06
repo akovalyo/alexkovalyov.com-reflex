@@ -29,3 +29,7 @@ main_page_font_size = ["1em", "1.25em", "1.5em", "1.75em", "1.75em"]
 card_project_width = ["70vw", "60vw", "200px", "220px", "260px"]
 card_blog_width = ["70vw", "60vw", "240px", "260px", "300px"]
 card_blog_height = ["42vw", "36vw", "120px", "132px", "156px"]
+
+blog_post_content_width = ["80vw", "80vw", "80vw", "70vw", "60vw"]
+
+form_max_width = ["75vw", "65vw", "55vw", "45vw", "35vw"]

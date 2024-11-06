@@ -2,7 +2,7 @@ import reflex as rx
 
 from ..templates import template
 from ..navigation import routes
-from ..backend.state import State
+from ..backend.state import ProjectsState
 from .. import styles
 
 
@@ -92,7 +92,7 @@ def add_project() -> rx.Component:
                     ),
                     align="center",
                 ),
-                on_submit=State.handle_project_submit,
+                on_submit=ProjectsState.handle_project_submit,
                 reset_on_submit=True,
             ),
             width=[

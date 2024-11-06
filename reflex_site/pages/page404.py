@@ -2,12 +2,10 @@ import reflex as rx
 
 from ..templates import template
 from ..navigation import routes
-from ..backend.state import State
-from .. import styles
 
 
 @template(
-    route="/404",
+    route=routes.PAGE_404_ROUTE,
     title="404",
 )
 def page404() -> rx.Component:

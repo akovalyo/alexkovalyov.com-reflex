@@ -8,32 +8,33 @@ from ..form.blog_post_form import blog_post_form_rows
 
 
 @template(
-    route=routes.ADD_BLOG_POST_ROUT,
-    title="Add Blog Post",
-    on_load=BlogPostState.clear_current_blog_post,
+    route="/blog/[address]/edit",
+    title="Edit Blog Post",
+    on_load=BlogPostState.get_blog_post,
 )
-def add_blog_post() -> rx.Component:
+def edit_blog_post() -> rx.Component:
     return rx.vstack(
         rx.vstack(
             rx.heading(
-                "ADD BLOG POST",
+                "EDIT BLOG POST",
                 size="7",
                 padding_top="1em",
                 padding_bottom="0",
             ),
             rx.divider(
+                # width="100%",
                 height="5px",
                 bg=styles.heading_color,
             ),
             gap="0",
             padding_bottom="1em",
+            # width="100%",
             align="center",
         ),
         rx.box(
             rx.form(
                 blog_post_form_rows(),
-                on_submit=BlogPostState.add_blog_post,
-                reset_on_submit=True,
+                on_submit=BlogPostState.edit_blog_post,
             ),
             width=styles.form_max_width,
         ),

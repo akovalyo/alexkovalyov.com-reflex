@@ -5,12 +5,28 @@ def convert_str_to_datetime(created_at: str) -> datetime:
     if not created_at:
         return datetime.now(timezone.utc)
     else:
+        date_str, time_str = created_at.split("T")
+        date_int = [int(d) for d in date_str.split("-")]
+        time_int = [int(t) for t in time_str.split(":")]
         return datetime(
-            *[
-                int(num)
-                for num in created_at.split(
-                    "-",
-                )
-            ],
+            *date_int,
+            *time_int,
             tzinfo=timezone.utc,
         )
+
+
+def add_datetime_to_form_data(form_data: dict) -> dict:
+    data = {}
+    for k, v in form_data.items():
+        if k == "created_at":
+            v = convert_str_to_datetime(form_data["created_at"])
+        data[k] = v
+    return data
+
+
+def get_time() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def convert_datetime_to_str(dt: datetime) -> str:
+    return dt.strftime("%Y-%m-%dT%H:%m")

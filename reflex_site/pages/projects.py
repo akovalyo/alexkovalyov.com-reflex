@@ -4,7 +4,7 @@ from ..templates import template
 from ..navigation import routes
 
 # from ..components.grid import *
-from ..backend.state import State
+from ..backend.state import ProjectsState
 from .. import styles
 from ..backend.models import Project
 from ..components.buttons import button
@@ -21,10 +21,27 @@ def project_card(item: Project) -> rx.Component:
                 width="100%",
                 padding="5px 0",
             ),
+            rx.box(
+                background=f"center/cover url('{item.image}')",
+                width="100%",
+                height=styles.card_project_width,
+            ),
             rx.flex(
+                rx.text(
+                    item.description,
+                    align="center",
+                    padding_bottom="10px",
+                ),
+                rx.spacer(gap="0"),
                 rx.cond(
                     item.url,
-                    button(item.url_title, item.url),
+                    rx.box(
+                        button(
+                            item.url_title,
+                            item.url,
+                        ),
+                        padding_bottom="10px",
+                    ),
                     None,
                 ),
                 rx.cond(
@@ -32,20 +49,10 @@ def project_card(item: Project) -> rx.Component:
                     button(item.url_secondary_title, item.url_secondary),
                     None,
                 ),
-                background=f"center/cover url('{item.image}')",
-                width="100%",
-                height=styles.card_project_width,
-                align="center",
-                justify="center",
-            ),
-            rx.flex(
-                rx.text(
-                    item.description,
-                    align="center",
-                ),
+                direction="column",
                 width="100%",
                 padding="5px",
-                height="60px",
+                height="150px",
                 align="center",
                 justify="center",
             ),
@@ -64,7 +71,7 @@ def project_card(item: Project) -> rx.Component:
 @template(
     route=routes.PROJECTS_ROUTE,
     title="Projects",
-    on_load=State.load_projects,
+    on_load=ProjectsState.load_projects,
 )
 def projects() -> rx.Component:
     return rx.vstack(
@@ -85,7 +92,7 @@ def projects() -> rx.Component:
         ),
         rx.flex(
             rx.foreach(
-                State.projects,
+                ProjectsState.projects,
                 lambda item: project_card(item),
             ),
             direction="row",
