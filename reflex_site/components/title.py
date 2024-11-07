@@ -13,6 +13,7 @@ def page_title(
                 title,
                 size="7",
                 padding_bottom="0",
+                text_align="center",
             ),
             rx.divider(
                 width="100%",

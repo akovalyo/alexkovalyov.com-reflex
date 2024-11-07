@@ -2,10 +2,7 @@ import reflex as rx
 from ..backend.models import BlogPost, Project
 from typing import List
 from sqlmodel import select
-from ..backend.utils import (
-    convert_datetime_to_str,
-    add_datetime_to_form_data,
-)
+from ..backend.utils import add_datetime_to_form_data
 from ..navigation import routes
 
 
@@ -27,11 +24,17 @@ class BlogPostState(State):
     def _blog_post_address(self):
         return self.router.page.params.get("address", "")
 
-    @rx.var
-    def get_str_datetime(self) -> str:
+    @rx.var(cache=True)
+    def get_str_datetime_for_form(self) -> str:
         return (
-            convert_datetime_to_str(self.blog_post.created_at) if self.blog_post else ""
+            self.blog_post.created_at.strftime("%Y-%m-%dT%H:%m")
+            if self.blog_post
+            else ""
         )
+
+    @rx.var(cache=True)
+    def get_str_datetime_for_post(self) -> str:
+        return self.blog_post.created_at.strftime("%Y-%m-%d") if self.blog_post else ""
 
     def get_empty_blog_post(self) -> BlogPost:
         return BlogPost(

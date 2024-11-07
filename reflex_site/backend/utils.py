@@ -26,7 +26,3 @@ def add_datetime_to_form_data(form_data: dict) -> dict:
 
 def get_time() -> datetime:
     return datetime.now(timezone.utc)
-
-
-def convert_datetime_to_str(dt: datetime) -> str:
-    return dt.strftime("%Y-%m-%dT%H:%m")

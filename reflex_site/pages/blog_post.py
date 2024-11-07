@@ -52,37 +52,32 @@ def blog_post() -> rx.Component:
                 height="40vh",
                 object_fit="cover",
             ),
-            rx.flex(
-                # rx.spacer(),
-                page_title(BlogPostState.blog_post.title, padding_bottom="5px"),
-                # rx.spacer(),
+            rx.vstack(
                 rx.box(
                     button(
                         "Edit",
                         f"{routes.BLOG_ROUTE}/{BlogPostState.blog_post.address}/edit",
                         padding="20px",
                     ),
-                    padding_left="1em",
                     padding_top="1em",
                 ),
-                justify_self="flex-end",
-                direction="row",
-                wrap="wrap",
-                justify="center",
+                page_title(BlogPostState.blog_post.title, padding_bottom="5px"),
                 align="center",
                 width="100%",
+                gap="0",
             ),
             rx.vstack(
+                rx.text(
+                    BlogPostState.get_str_datetime_for_post,
+                ),
                 rx.heading(
                     BlogPostState.blog_post.description,
                     size="5",
                     font_weight="300",
-                    # padding_bottom="0",
                 ),
-                rx.text(
+                rx.markdown(
                     BlogPostState.blog_post.content,
-                    font_weight="300",
-                    align="center",
+                    component_map=styles.markdown_style,
                 ),
                 width=styles.blog_post_content_width,
                 align="center",

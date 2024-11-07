@@ -52,7 +52,7 @@ def blog_post_form_rows() -> rx.Component:
                 name="created_at",
                 placeholder="Date",
                 default_value=rx.cond(
-                    BlogPostState.blog_post, BlogPostState.get_str_datetime, ""
+                    BlogPostState.blog_post, BlogPostState.get_str_datetime_for_form, ""
                 ),
                 required=False,
                 type="datetime-local",

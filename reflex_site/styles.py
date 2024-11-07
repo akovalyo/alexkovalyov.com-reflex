@@ -33,3 +33,21 @@ card_blog_height = ["42vw", "36vw", "120px", "132px", "156px"]
 blog_post_content_width = ["80vw", "80vw", "80vw", "70vw", "60vw"]
 
 form_max_width = ["75vw", "65vw", "55vw", "45vw", "35vw"]
+
+markdown_style = {
+    "h1": lambda text: rx.heading(text, size="7", margin_y="1em"),
+    "h2": lambda text: rx.heading(text, size="6", margin_y="1em"),
+    "h3": lambda text: rx.heading(text, size="5", margin_y="1em"),
+    "h4": lambda text: rx.heading(text, size="4", margin_y="1em"),
+    "h5": lambda text: rx.heading(text, size="3", margin_y="1em"),
+    "h6": lambda text: rx.heading(text, size="2", margin_y="1em"),
+    # "p": lambda text: rx.text(text, color="green", margin_y="1em"),
+    "code": lambda text: rx.code(text, color_scheme="gray"),
+    "codeblock": lambda text, **props: rx.code_block(text, **props, margin_y="1em"),
+    "a": lambda text, **props: rx.link(
+        text,
+        **props,
+        text_decoration="underline",
+        text_decoration_color=accent_text_color,
+    ),
+}
