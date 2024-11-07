@@ -3,7 +3,7 @@ from typing import List
 from ..templates import template
 from ..navigation import routes
 
-# from ..components.grid import *
+from ..components.title import page_title
 from ..backend.state import ProjectsState
 from .. import styles
 from ..backend.models import Project
@@ -39,6 +39,7 @@ def project_card(item: Project) -> rx.Component:
                         button(
                             item.url_title,
                             item.url,
+                            is_external=True,
                         ),
                         padding_bottom="10px",
                     ),
@@ -46,7 +47,11 @@ def project_card(item: Project) -> rx.Component:
                 ),
                 rx.cond(
                     item.url_secondary,
-                    button(item.url_secondary_title, item.url_secondary),
+                    button(
+                        item.url_secondary_title,
+                        item.url_secondary,
+                        is_external=True,
+                    ),
                     None,
                 ),
                 direction="column",
@@ -75,21 +80,7 @@ def project_card(item: Project) -> rx.Component:
 )
 def projects() -> rx.Component:
     return rx.vstack(
-        rx.vstack(
-            rx.heading(
-                "PROJECTS",
-                size="7",
-                padding_top="2em",
-                padding_bottom="0",
-            ),
-            rx.divider(
-                width="100%",
-                height="5px",
-                bg=styles.heading_color,
-            ),
-            gap="0",
-            padding_bottom="1em",
-        ),
+        page_title("PROJECTS", padding_top="2em", padding_bottom="1em"),
         rx.flex(
             rx.foreach(
                 ProjectsState.projects,

@@ -18,20 +18,22 @@ def main_button(title: str, href: str) -> rx.Component:
     )
 
 
-def button(title: str, href: str) -> rx.Component:
+def button(
+    title: str, href: str, padding: str = "40px", is_external: bool = False
+) -> rx.Component:
     return rx.link(
         rx.button(
             title,
             variant="surface",
             border_radius="10px",
-            padding="0 40px",
+            padding=f"0 {padding}",
             cursor="pointer",
             background=styles.bar_color,
             _hover={
-                "border": "2px solid",
+                # "border": "2px solid",
                 "color": styles.accent_text_color,
             },
         ),
         href=href,
-        is_external=True,
+        is_external=is_external,
     )

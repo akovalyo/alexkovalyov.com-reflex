@@ -4,6 +4,8 @@ from ..templates import template
 from ..navigation import routes
 from ..backend.state import BlogPostState
 from .. import styles
+from ..components.title import page_title
+from ..components.buttons import button
 
 
 def blog_post_loading() -> rx.Component:
@@ -50,20 +52,25 @@ def blog_post() -> rx.Component:
                 height="40vh",
                 object_fit="cover",
             ),
-            rx.vstack(
-                rx.heading(
-                    BlogPostState.blog_post.title,
-                    size="7",
+            rx.flex(
+                # rx.spacer(),
+                page_title(BlogPostState.blog_post.title, padding_bottom="5px"),
+                # rx.spacer(),
+                rx.box(
+                    button(
+                        "Edit",
+                        f"{routes.BLOG_ROUTE}/{BlogPostState.blog_post.address}/edit",
+                        padding="20px",
+                    ),
+                    padding_left="1em",
                     padding_top="1em",
-                    padding_bottom="0",
                 ),
-                rx.divider(
-                    width="100%",
-                    height="5px",
-                    bg=styles.heading_color,
-                ),
-                gap="0",
-                padding_bottom="1em",
+                justify_self="flex-end",
+                direction="row",
+                wrap="wrap",
+                justify="center",
+                align="center",
+                width="100%",
             ),
             rx.vstack(
                 rx.heading(

@@ -5,6 +5,7 @@ from ..navigation import routes
 from ..backend.state import BlogPostState
 from ..backend.models import BlogPost
 from .. import styles
+from ..components.title import page_title
 
 
 def blog_card(item: BlogPost) -> rx.Component:
@@ -63,21 +64,7 @@ def blog_card(item: BlogPost) -> rx.Component:
 )
 def blog() -> rx.Component:
     return rx.vstack(
-        rx.vstack(
-            rx.heading(
-                "BLOG",
-                size="7",
-                padding_top="2em",
-                padding_bottom="0",
-            ),
-            rx.divider(
-                width="100%",
-                height="5px",
-                bg=styles.heading_color,
-            ),
-            gap="0",
-            padding_bottom="1em",
-        ),
+        page_title("BLOG", padding_top="2em", padding_bottom="1em"),
         rx.flex(
             rx.foreach(BlogPostState.blog_posts, lambda item: blog_card(item)),
             direction="row",
