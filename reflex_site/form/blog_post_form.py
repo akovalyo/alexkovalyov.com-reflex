@@ -40,7 +40,7 @@ def blog_post_form_rows() -> rx.Component:
                 name="content",
                 placeholder="Content",
                 value=rx.cond(
-                    BlogPostState.blog_post, BlogPostState.blog_post.content, ""
+                    BlogPostState.blog_post, BlogPostState.blog_post.content.content, ""
                 ),
                 on_change=BlogPostState.update_content_value,
                 required=True,
@@ -52,7 +52,9 @@ def blog_post_form_rows() -> rx.Component:
                 name="created_at",
                 placeholder="Date",
                 default_value=rx.cond(
-                    BlogPostState.blog_post, BlogPostState.get_str_datetime_for_form, ""
+                    BlogPostState.blog_post,
+                    BlogPostState.get_str_datetime_for_form,
+                    "",
                 ),
                 required=False,
                 type="datetime-local",

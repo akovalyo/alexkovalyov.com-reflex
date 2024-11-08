@@ -43,7 +43,11 @@ markdown_style = {
     "h6": lambda text: rx.heading(text, size="2", margin_y="1em"),
     # "p": lambda text: rx.text(text, color="green", margin_y="1em"),
     "code": lambda text: rx.code(text, color_scheme="gray"),
-    "codeblock": lambda text, **props: rx.code_block(text, **props, margin_y="1em"),
+    "codeblock": lambda text, **props: rx.code_block(
+        text,
+        **props,
+        margin_y="1em",
+    ),
     "a": lambda text, **props: rx.link(
         text,
         **props,

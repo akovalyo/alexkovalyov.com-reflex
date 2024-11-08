@@ -76,8 +76,9 @@ def blog_post() -> rx.Component:
                     font_weight="300",
                 ),
                 rx.markdown(
-                    BlogPostState.blog_post.content,
+                    BlogPostState.blog_post_content,
                     component_map=styles.markdown_style,
+                    width="100%",
                 ),
                 width=styles.blog_post_content_width,
                 align="center",

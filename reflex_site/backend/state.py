@@ -1,9 +1,10 @@
 import reflex as rx
-from ..backend.models import BlogPost, Project
+from ..backend.models import BlogPost, Project, BlogContent
 from typing import List
 from sqlmodel import select
-from ..backend.utils import add_datetime_to_form_data
 from ..navigation import routes
+from ..backend.utils import proccess_form_data
+from datetime import datetime, timezone
 
 
 class State(rx.State):
@@ -18,6 +19,7 @@ class State(rx.State):
 class BlogPostState(State):
     blog_posts: List["BlogPost"] = []
     blog_post: BlogPost | None
+    blog_post_content: str = ""
     blog_post_is_loading: bool = True
 
     @rx.var(cache=True)
@@ -37,21 +39,23 @@ class BlogPostState(State):
         return self.blog_post.created_at.strftime("%Y-%m-%d") if self.blog_post else ""
 
     def get_empty_blog_post(self) -> BlogPost:
+        content = BlogContent(content="")
         return BlogPost(
             id=None,
             title="",
             description="",
             image="",
-            content="",
-            created_at="",
+            content=content,
+            created_at=datetime.now(timezone.utc),
             address="",
         )
 
     def clear_current_blog_post(self):
         self.blog_post = self.get_empty_blog_post()
+        self.blog_post_content = ""
 
     def update_content_value(self, value):
-        self.blog_post.content = value
+        self.blog_post.content.content = value
 
     def load_blog_posts(self):
         with rx.session() as session:
@@ -71,24 +75,31 @@ class BlogPostState(State):
             if not res:
                 return rx.redirect(routes.PAGE_404_ROUTE)
             self.blog_post = res
+            self.blog_post_content = res.content.content
             self.blog_post_is_loading = False
 
     def add_blog_post(self, form_data: dict):
-        data = add_datetime_to_form_data(form_data)
+        content = form_data["content"]
+        data = proccess_form_data(form_data)
+
         with rx.session() as session:
-            db_entry = BlogPost(**data)
-            session.add(db_entry)
+            db_blogpost = BlogPost(**data)
+            db_content = BlogContent(content=content)
+            db_blogpost.content = db_content
+            session.add(db_blogpost)
             session.commit()
         self.clear_current_blog_post()
         return rx.redirect(routes.BLOG_ROUTE)
 
     def edit_blog_post(self, form_data: dict):
-        data = add_datetime_to_form_data(form_data)
+        content = form_data["content"]
+        data = proccess_form_data(form_data)
         with rx.session() as session:
             res = session.get(BlogPost, self.blog_post.id)
             if res:
                 for k, v in data.items():
                     setattr(res, k, v)
+                res.content.content = content
             else:
                 # TODO Change to show the error message
                 return rx.redirect("/404")
@@ -106,7 +117,7 @@ class ProjectsState(State):
             self.projects = res
 
     def handle_project_submit(self, form_data: dict):
-        data = add_datetime_to_form_data(form_data)
+        data = proccess_form_data(form_data)
         with rx.session() as session:
             db_entry = Project(**data)
             session.add(db_entry)

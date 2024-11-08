@@ -15,11 +15,13 @@ def convert_str_to_datetime(created_at: str) -> datetime:
         )
 
 
-def add_datetime_to_form_data(form_data: dict) -> dict:
+def proccess_form_data(form_data: dict) -> dict:
     data = {}
     for k, v in form_data.items():
         if k == "created_at":
             v = convert_str_to_datetime(form_data["created_at"])
+        if k == "content":
+            continue
         data[k] = v
     return data
 
