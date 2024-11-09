@@ -1,5 +1,4 @@
 import reflex as rx
-from ..backend.models import BlogPost
 from ..backend.state import BlogPostState
 
 
@@ -73,6 +72,7 @@ def blog_post_form_rows() -> rx.Component:
             rx.button(
                 "Submit",
                 type="submit",
+                cursor="pointer",
             ),
             align="center",
         ),

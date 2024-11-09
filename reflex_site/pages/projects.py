@@ -13,13 +13,26 @@ from ..components.buttons import button
 def project_card(item: Project) -> rx.Component:
     return rx.box(
         rx.vstack(
-            rx.box(
+            rx.hstack(
                 rx.text(
                     item.title,
                     align="center",
                 ),
+                rx.link(
+                    rx.icon(
+                        "trash-2",
+                        size=18,
+                        color=rx.color("accent"),
+                        _hover={
+                            "color": styles.accent_text_color,
+                        },
+                    ),
+                    cursor="pointer",
+                ),
                 width="100%",
                 padding="5px 0",
+                align="center",
+                justify="center",
             ),
             rx.box(
                 background=f"center/cover url('{item.image}')",

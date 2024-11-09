@@ -110,15 +110,29 @@ class BlogPostState(State):
 
 class ProjectsState(State):
     projects: List["Project"] = []
+    current_project: Project | None
+
+    @rx.var(cache=True)
+    def get_str_datetime_for_post(self) -> str:
+        return (
+            self.current_project.created_at.strftime("%Y-%m-%d")
+            if self.current_project
+            else ""
+        )
+
+    def clear_current_project(self):
+        self.current_project = None
 
     def load_projects(self):
         with rx.session() as session:
             res = session.exec(select(Project)).all()
             self.projects = res
 
-    def handle_project_submit(self, form_data: dict):
+    def add_project(self, form_data: dict):
         data = proccess_form_data(form_data)
         with rx.session() as session:
             db_entry = Project(**data)
             session.add(db_entry)
             session.commit()
+        self.clear_current_project()
+        return rx.redirect(routes.PROJECTS_ROUTE)

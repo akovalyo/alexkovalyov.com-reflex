@@ -3,12 +3,14 @@ import reflex as rx
 from ..templates import template
 from ..navigation import routes
 from ..backend.state import ProjectsState
+from ..forms.project_form import project_form_rows
 from .. import styles
 
 
 @template(
     route=routes.ADD_PROJECT_ROUT,
     title="Add Project",
+    on_load=ProjectsState.clear_current_project,
 )
 def add_project() -> rx.Component:
     return rx.vstack(
@@ -29,70 +31,8 @@ def add_project() -> rx.Component:
         ),
         rx.box(
             rx.form(
-                rx.vstack(
-                    rx.input(
-                        name="title",
-                        placeholder="Title",
-                        required=True,
-                        type="text",
-                        width="100%",
-                    ),
-                    rx.input(
-                        name="description",
-                        placeholder="Description",
-                        required=True,
-                        type="text",
-                        width="100%",
-                    ),
-                    rx.input(
-                        name="url",
-                        placeholder="Url",
-                        required=False,
-                        type="text",
-                        width="100%",
-                    ),
-                    rx.input(
-                        name="url_title",
-                        placeholder="Url Title",
-                        required=False,
-                        type="text",
-                        width="100%",
-                    ),
-                    rx.input(
-                        name="url_secondary",
-                        placeholder="Secondary Url",
-                        required=False,
-                        type="text",
-                        width="100%",
-                    ),
-                    rx.input(
-                        name="url_secondary_title",
-                        placeholder="Secondary Url Title",
-                        required=False,
-                        type="text",
-                        width="100%",
-                    ),
-                    rx.input(
-                        name="image",
-                        placeholder="Image link",
-                        required=True,
-                        type="text",
-                        width="100%",
-                    ),
-                    rx.input(
-                        name="created_at",
-                        placeholder="Date",
-                        required=False,
-                        type="date",
-                        width="100%",
-                    ),
-                    rx.button(
-                        "Submit",
-                        type="submit",
-                    ),
-                    align="center",
-                ),
-                on_submit=ProjectsState.handle_project_submit,
+                project_form_rows(),
+                on_submit=ProjectsState.add_project,
                 reset_on_submit=True,
             ),
             width=[

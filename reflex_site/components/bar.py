@@ -6,13 +6,33 @@ from ..navigation import routes
 
 
 def menu_items():
-    paths = [
-        routes.HOME_ROUTE,
-        routes.PROJECTS_ROUTE,
-        routes.BLOG_ROUTE,
+    return [
+        {
+            "title": "Home",
+            "path": routes.HOME_ROUTE,
+            "auth": False,
+        },
+        {
+            "title": "Projects",
+            "path": routes.PROJECTS_ROUTE,
+            "auth": False,
+        },
+        {
+            "title": "Blog",
+            "path": routes.BLOG_ROUTE,
+            "auth": False,
+        },
+        {
+            "title": "Add Project",
+            "path": routes.ADD_PROJECT_ROUT,
+            "auth": False,
+        },
+        {
+            "title": "Add Blog",
+            "path": routes.ADD_BLOG_POST_ROUT,
+            "auth": True,
+        },
     ]
-    titles = [path.strip("/").capitalize() if path != "/" else "Home" for path in paths]
-    return titles, paths
 
 
 def menu_item_icon(icon: str) -> rx.Component:
@@ -29,6 +49,8 @@ def menu_item(text: str, url: str) -> rx.Component:
                 ("Home", menu_item_icon("home")),
                 ("Projects", menu_item_icon("folder-kanban")),
                 ("Blog", menu_item_icon("notebook-text")),
+                ("Add Blog", menu_item_icon("list-plus")),
+                ("Add Project", menu_item_icon("folder-plus")),
             ),
             rx.text(text, size="4", weight="regular"),
             color=rx.cond(
@@ -69,7 +91,7 @@ def menu_item(text: str, url: str) -> rx.Component:
 
 
 def navbar_menu_button() -> rx.Component:
-    titles, paths = menu_items()
+    items = menu_items()
     return rx.drawer.root(
         rx.drawer.trigger(
             rx.icon(
@@ -95,10 +117,10 @@ def navbar_menu_button() -> rx.Component:
                     rx.divider(),
                     *[
                         menu_item(
-                            text=title,
-                            url=path,
+                            text=item["title"],
+                            url=item["path"],
                         )
-                        for title, path in zip(titles, paths)
+                        for item in items
                     ],
                     rx.spacer(),
                     footer(),
@@ -150,7 +172,7 @@ def navbar() -> rx.Component:
 
 
 def sidebar() -> rx.Component:
-    titles, paths = menu_items()
+    items = menu_items()
     return rx.flex(
         rx.vstack(
             rx.hstack(
@@ -166,10 +188,10 @@ def sidebar() -> rx.Component:
                 rx.vstack(
                     *[
                         menu_item(
-                            text=title,
-                            url=path,
+                            text=item["title"],
+                            url=item["path"],
                         )
-                        for title, path in zip(titles, paths)
+                        for item in items
                     ],
                     spacing="1",
                     width="100%",
