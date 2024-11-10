@@ -38,3 +38,14 @@ class Project(rx.Model, table=True):
         sa_column_kwargs={"server_default": sqlalchemy.func.now()},
         nullable=False,
     )
+
+
+class ContactMessage(rx.Model, table=True):
+    email: str
+    message: str
+    created_at: datetime = Field(
+        default_factory=datetime.now(timezone.utc),
+        sa_type=sqlalchemy.DateTime(timezone=True),
+        sa_column_kwargs={"server_default": sqlalchemy.func.now()},
+        nullable=False,
+    )
