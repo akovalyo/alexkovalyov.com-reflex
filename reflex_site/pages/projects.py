@@ -18,16 +18,16 @@ def project_card(item: Project) -> rx.Component:
                     item.title,
                     align="center",
                 ),
-                rx.link(
-                    rx.icon(
-                        "trash-2",
-                        size=18,
-                        color=rx.color("accent"),
-                        _hover={
-                            "color": styles.accent_text_color,
-                        },
-                    ),
+                rx.icon(
+                    "trash-2",
+                    class_name=str(item.id),
+                    size=18,
+                    color=rx.color("accent"),
                     cursor="pointer",
+                    _hover={
+                        "color": styles.accent_text_color,
+                    },
+                    on_click=rx.redirect(f"/{routes.PROJECTS_ROUTE}/{item.id}/delete"),
                 ),
                 width="100%",
                 padding="5px 0",

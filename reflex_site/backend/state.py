@@ -120,6 +120,10 @@ class ProjectsState(State):
             else ""
         )
 
+    @rx.var(cache=True)
+    def _project_id(self):
+        return self.router.page.params.get("id", "")
+
     def clear_current_project(self):
         self.current_project = None
 
@@ -135,4 +139,29 @@ class ProjectsState(State):
             session.add(db_entry)
             session.commit()
         self.clear_current_project()
+        return rx.redirect(routes.PROJECTS_ROUTE)
+
+    def load_project(self):
+        with rx.session() as session:
+            if self._project_id == "":
+                self.current_project = None
+                return rx.redirect(routes.PAGE_404_ROUTE)
+            res = session.get(Project, self._project_id)
+            if not res:
+                return rx.redirect(routes.PAGE_404_ROUTE)
+            self.current_project = res
+
+    def delete_project(self):
+        with rx.session() as session:
+            if self.current_project:
+                res = session.get(Project, self.current_project.id)
+                if res:
+                    session.delete(res)
+                    session.commit()
+
+        self.current_project = None
+        return rx.redirect(routes.PROJECTS_ROUTE)
+
+    def cancel_delete_project(self):
+        self.current_project = None
         return rx.redirect(routes.PROJECTS_ROUTE)

@@ -8,7 +8,7 @@ from ..forms.blog_post_form import blog_post_form_rows
 
 
 @template(
-    route="/blog/[address]/edit",
+    route=f"{routes.BLOG_ROUTE}/[address]/edit",
     title="Edit Blog Post",
     on_load=BlogPostState.get_blog_post,
 )
