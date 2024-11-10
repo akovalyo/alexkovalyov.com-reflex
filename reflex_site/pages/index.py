@@ -3,7 +3,10 @@ import reflex as rx
 from ..templates import template
 from .. import styles
 from ..navigation import routes
-from ..components.buttons import main_button
+from ..components.buttons import button
+from ..components.title import page_title
+from ..forms.contact_form import contact_form_rows
+from ..backend.contact_state import ContactState
 
 
 @template(
@@ -30,10 +33,24 @@ def index() -> rx.Component:
             font_weight="400",
         ),
         rx.vstack(
-            main_button("Projects", routes.PROJECTS_ROUTE),
-            main_button("Blog", routes.BLOG_ROUTE),
-            padding_top="2em",
+            page_title("PROJECTS", padding_bottom="1em"),
+            button("More", routes.PROJECTS_ROUTE),
+            page_title("BLOG", padding_bottom="1em"),
+            button("More", routes.BLOG_ROUTE),
+            # padding_top="2em",
             spacing="4",
+            align="center",
+        ),
+        rx.vstack(
+            page_title("CONTACT", padding_bottom="1em"),
+        ),
+        rx.box(
+            rx.form(
+                contact_form_rows(),
+                on_submit=ContactState.handle_submit,
+                reset_on_submit=True,
+            ),
+            width=styles.form_max_width,
         ),
         width="100%",
         align="center",

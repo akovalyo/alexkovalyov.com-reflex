@@ -14,6 +14,7 @@ def page_title(
                 size="7",
                 padding_bottom="0",
                 text_align="center",
+                font_weight="500",
             ),
             rx.divider(
                 width="100%",

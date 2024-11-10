@@ -47,7 +47,7 @@ def delete_project() -> rx.Component:
                 rx.button(
                     "No",
                     on_click=ProjectsState.cancel_delete_project,
-                    background=rx.color("grass", 10),
+                    background=styles.green_color,
                     cursor="pointer",
                 ),
                 width="100%",

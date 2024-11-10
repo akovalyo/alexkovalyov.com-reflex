@@ -8,6 +8,7 @@ accent_text_color = rx.color("accent", 10)
 accent_bg_color = rx.color("accent", 3)
 gray_bg_color = rx.color("gray", 3)
 bar_color = rx.color("gray", 4)
+green_color = rx.color("grass", 10)
 sidebar_width = "32em"
 sidebar_content_width = "16em"
 
@@ -54,4 +55,23 @@ markdown_style = {
         text_decoration="underline",
         text_decoration_color=accent_text_color,
     ),
+}
+
+main_button_style = {
+    "variant": "surface",
+    "border_radius": "10px",
+    "height": ["30px", "30px", "35px", "45px", "45px"],
+    "width": ["100px", "100px", "110px", "120px", "120px"],
+    "font_size": ["1em", "1em", "1.25em", "1.4em", "1.4em"],
+    "font_weight": "200",
+    "cursor": "pointer",
+}
+
+button_style = {
+    "variant": "surface",
+    "border_radius": "10px",
+    "cursor": "pointer",
+    "_hover": {
+        "color": accent_text_color,
+    },
 }

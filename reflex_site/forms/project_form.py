@@ -1,5 +1,6 @@
 import reflex as rx
 from ..backend.state import ProjectsState
+from .. import styles
 
 
 def project_form_rows() -> rx.Component:
@@ -103,6 +104,7 @@ def project_form_rows() -> rx.Component:
                 "Submit",
                 type="submit",
                 cursor="pointer",
+                background=styles.green_color,
             ),
             align="center",
         ),

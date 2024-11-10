@@ -1,5 +1,6 @@
 import reflex as rx
 from ..backend.state import BlogPostState
+from .. import styles
 
 
 def blog_post_form_rows() -> rx.Component:
@@ -73,6 +74,7 @@ def blog_post_form_rows() -> rx.Component:
                 "Submit",
                 type="submit",
                 cursor="pointer",
+                background=styles.green_color,
             ),
             align="center",
         ),

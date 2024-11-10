@@ -20,7 +20,6 @@ def project_card(item: Project) -> rx.Component:
                 ),
                 rx.icon(
                     "trash-2",
-                    class_name=str(item.id),
                     size=18,
                     color=rx.color("accent"),
                     cursor="pointer",
