@@ -5,6 +5,8 @@ from ..navigation import routes
 from ..backend.state import BlogPostState
 from .. import styles
 from ..forms.blog_post_form import blog_post_form_rows
+from ..components.title import page_title
+from ..components.alert_dialog import alert_dialog
 
 
 @template(
@@ -14,23 +16,8 @@ from ..forms.blog_post_form import blog_post_form_rows
 )
 def edit_blog_post() -> rx.Component:
     return rx.vstack(
-        rx.vstack(
-            rx.heading(
-                "EDIT BLOG POST",
-                size="7",
-                padding_top="1em",
-                padding_bottom="0",
-            ),
-            rx.divider(
-                # width="100%",
-                height="5px",
-                bg=styles.heading_color,
-            ),
-            gap="0",
-            padding_bottom="1em",
-            # width="100%",
-            align="center",
-        ),
+        page_title("EDIT BLOG POST", padding_bottom="1em"),
+        alert_dialog(),
         rx.box(
             rx.form(
                 blog_post_form_rows(),

@@ -107,6 +107,17 @@ class BlogPostState(State):
             session.commit()
             return rx.redirect(f"{routes.BLOG_ROUTE}/{self.blog_post.address}")
 
+    def delete_blog_post(self):
+        with rx.session() as session:
+            res = session.get(BlogPost, self.blog_post.id)
+            if res:
+                session.delete(res.content)
+                session.delete(res)
+                session.commit()
+            self.clear_current_blog_post()
+            # TODO Show confirmation messsage
+            return rx.redirect(routes.BLOG_ROUTE)
+
 
 class ProjectsState(State):
     projects: List["Project"] = []
