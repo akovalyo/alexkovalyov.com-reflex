@@ -1,7 +1,6 @@
 import reflex as rx
 from typing import Callable
-from ..components.bar import navbar
-from ..components.bar import sidebar
+from ..components import navbar, sidebar
 from .. import styles
 
 default_meta = [

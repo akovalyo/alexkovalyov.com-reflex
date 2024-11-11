@@ -3,58 +3,7 @@ import reflex as rx
 from ..templates import template
 from ..navigation import routes
 from ..backend.state import BlogPostState
-from ..backend.models import BlogPost
-from .. import styles
-from ..components.title import page_title
-
-
-def blog_card(item: BlogPost) -> rx.Component:
-    return rx.link(
-        rx.box(
-            rx.vstack(
-                rx.image(
-                    src=item.image,
-                    width="100%",
-                    border_radius="13px 13px 0 0",
-                    height=styles.card_blog_height,
-                    object_fit="cover",
-                ),
-                rx.flex(
-                    rx.heading(
-                        item.title,
-                        align="center",
-                        size="4",
-                        padding_bottom="5px",
-                    ),
-                    rx.text(
-                        item.description,
-                        align="center",
-                        size="3",
-                        font_weight="100",
-                    ),
-                    direction="column",
-                    width="100%",
-                    padding="5px",
-                    height="auto",
-                    align="center",
-                    justify="center",
-                    bg=styles.bar_color,
-                    border_radius="0 0 13px 13px",
-                ),
-                height="100%",
-                gap="0",
-            ),
-            width=styles.card_blog_width,
-            height="auto",
-            border=styles.border,
-            border_radius="15px",
-            _hover={
-                "border_color": styles.accent_text_color,
-            },
-        ),
-        href=f"{routes.BLOG_ROUTE}/{item.address}",
-        underline="none",
-    )
+from ..components import page_title, blog_card
 
 
 @template(

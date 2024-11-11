@@ -12,8 +12,15 @@ class State(rx.State):
     latest_projects: List["Project"] = []
 
     def load_data_for_home_page(self):
-        # load latest blogs and projects
-        pass
+        with rx.session() as session:
+            projects = session.exec(
+                select(Project).order_by(Project.created_at.desc()).limit(3)
+            ).all()
+            self.latest_projects = projects
+            blog_posts = session.exec(
+                select(BlogPost).order_by(BlogPost.created_at.desc()).limit(2)
+            ).all()
+            self.latest_blog_posts = blog_posts
 
 
 class BlogPostState(State):
@@ -60,7 +67,9 @@ class BlogPostState(State):
     def load_blog_posts(self):
         with rx.session() as session:
             # session.exec(select(BlogPost).order_by(BlogPost.created_at.desc()).limit(4)).all()
-            res = session.exec(select(BlogPost)).all()
+            res = session.exec(
+                select(BlogPost).order_by(BlogPost.created_at.desc())
+            ).all()
             self.blog_posts = res
 
     def get_blog_post(self):
@@ -140,7 +149,9 @@ class ProjectsState(State):
 
     def load_projects(self):
         with rx.session() as session:
-            res = session.exec(select(Project)).all()
+            res = session.exec(
+                select(Project).order_by(Project.created_at.desc())
+            ).all()
             self.projects = res
 
     def add_project(self, form_data: dict):

@@ -4,8 +4,8 @@ from ..templates import template
 from ..navigation import routes
 from ..backend.state import BlogPostState
 from .. import styles
-from ..components.title import page_title
-from ..components.buttons import button
+from ..components import page_title
+from ..components import button
 
 
 def blog_post_loading() -> rx.Component:

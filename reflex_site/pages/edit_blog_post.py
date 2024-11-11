@@ -5,8 +5,7 @@ from ..navigation import routes
 from ..backend.state import BlogPostState
 from .. import styles
 from ..forms.blog_post_form import blog_post_form_rows
-from ..components.title import page_title
-from ..components.alert_dialog import alert_dialog
+from ..components import page_title, alert_dialog
 
 
 @template(

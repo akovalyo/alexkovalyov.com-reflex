@@ -3,15 +3,18 @@ import reflex as rx
 from ..templates import template
 from .. import styles
 from ..navigation import routes
-from ..components.buttons import button
-from ..components.title import page_title
+from ..components import button
+from ..components import page_title
 from ..forms.contact_form import contact_form_rows
 from ..backend.contact_state import ContactState
+from ..backend.state import State
+from ..components import project_card, blog_card
 
 
 @template(
     route=routes.HOME_ROUTE,
     title="Home",
+    on_load=State.load_data_for_home_page,
 )
 def index() -> rx.Component:
     return rx.vstack(
@@ -21,36 +24,62 @@ def index() -> rx.Component:
             align="center",
             height="auto",
         ),
-        rx.heading(
-            "Hello, I'm Alex.",
-            font_size=styles.main_page_font_size,
-            font_weight="400",
-            padding_top="1em",
-        ),
-        rx.heading(
-            "I'm a software developer.",
-            font_size=styles.main_page_font_size,
-            font_weight="400",
-        ),
         rx.vstack(
-            page_title("PROJECTS", padding_bottom="1em"),
-            button("More", routes.PROJECTS_ROUTE),
-            page_title("BLOG", padding_bottom="1em"),
-            button("More", routes.BLOG_ROUTE),
-            # padding_top="2em",
-            spacing="4",
-            align="center",
-        ),
-        rx.vstack(
-            page_title("CONTACT", padding_bottom="1em"),
-        ),
-        rx.box(
-            rx.form(
-                contact_form_rows(),
-                on_submit=ContactState.handle_submit,
-                reset_on_submit=True,
+            rx.heading(
+                "Hello, I'm Alex.",
+                font_size=styles.main_page_font_size,
+                font_weight="400",
+                padding_top="1em",
             ),
-            width=styles.form_max_width,
+            rx.heading(
+                "I'm a software developer.",
+                font_size=styles.main_page_font_size,
+                font_weight="400",
+            ),
+            rx.vstack(
+                rx.divider(margin_top="2rem"),
+                page_title("PROJECTS", padding_bottom="1em"),
+                rx.flex(
+                    rx.foreach(
+                        State.latest_projects,
+                        lambda item: project_card(item),
+                    ),
+                    direction="row",
+                    wrap="wrap",
+                    spacing="6",
+                    justify="center",
+                    align="center",
+                ),
+                button("All", routes.PROJECTS_ROUTE),
+                rx.divider(),
+                page_title("BLOG", padding_bottom="1em"),
+                rx.flex(
+                    rx.foreach(
+                        State.latest_blog_posts,
+                        lambda item: blog_card(item),
+                    ),
+                    direction="row",
+                    wrap="wrap",
+                    spacing="6",
+                    justify="center",
+                    align="center",
+                ),
+                button("All", routes.BLOG_ROUTE),
+                rx.divider(),
+                page_title("CONTACT", padding_bottom="1em"),
+                rx.box(
+                    rx.form(
+                        contact_form_rows(),
+                        on_submit=ContactState.handle_submit,
+                        reset_on_submit=True,
+                    ),
+                    width=styles.form_max_width,
+                ),
+                spacing="4",
+                align="center",
+            ),
+            width="90%",
+            align="center",
         ),
         width="100%",
         align="center",
