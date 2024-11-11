@@ -60,13 +60,13 @@ class BlogPostState(State):
     def clear_current_blog_post(self):
         self.blog_post = self.get_empty_blog_post()
         self.blog_post_content = ""
+        yield
 
     def update_content_value(self, value):
         self.blog_post.content.content = value
 
     def load_blog_posts(self):
         with rx.session() as session:
-            # session.exec(select(BlogPost).order_by(BlogPost.created_at.desc()).limit(4)).all()
             res = session.exec(
                 select(BlogPost).order_by(BlogPost.created_at.desc())
             ).all()

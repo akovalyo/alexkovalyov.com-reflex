@@ -1,6 +1,6 @@
 HOME_ROUTE = "/"
 PROJECTS_ROUTE = "/projects"
 BLOG_ROUTE = "/blog"
-ADD_BLOG_POST_ROUT = "/add_blog"
-ADD_PROJECT_ROUT = "/add_project"
+ADD_BLOG_POST_ROUT = "/blog/add"
+ADD_PROJECT_ROUT = "/project/add"
 PAGE_404_ROUTE = "/404"

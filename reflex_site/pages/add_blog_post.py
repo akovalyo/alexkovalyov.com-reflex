@@ -29,13 +29,17 @@ def add_blog_post() -> rx.Component:
             padding_bottom="1em",
             align="center",
         ),
-        rx.box(
-            rx.form(
-                blog_post_form_rows(),
-                on_submit=BlogPostState.add_blog_post,
-                reset_on_submit=True,
+        rx.cond(
+            BlogPostState.blog_post & BlogPostState.blog_post.id,
+            rx.box(),
+            rx.box(
+                rx.form(
+                    blog_post_form_rows(),
+                    on_submit=BlogPostState.add_blog_post,
+                    reset_on_submit=True,
+                ),
+                width=styles.form_max_width,
             ),
-            width=styles.form_max_width,
         ),
         align="center",
         justify="center",
