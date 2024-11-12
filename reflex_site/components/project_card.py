@@ -3,6 +3,7 @@ from .. import styles
 from ..backend.models import Project
 from ..components import button
 from ..navigation import routes
+import reflex_local_auth as rxa
 
 
 def project_card(item: Project) -> rx.Component:
@@ -13,15 +14,21 @@ def project_card(item: Project) -> rx.Component:
                     item.title,
                     align="center",
                 ),
-                rx.icon(
-                    "trash-2",
-                    size=18,
-                    color=rx.color("accent"),
-                    cursor="pointer",
-                    _hover={
-                        "color": styles.accent_text_color,
-                    },
-                    on_click=rx.redirect(f"/{routes.PROJECTS_ROUTE}/{item.id}/delete"),
+                rx.cond(
+                    rxa.LocalAuthState.is_authenticated,
+                    rx.icon(
+                        "trash-2",
+                        size=18,
+                        color=rx.color("accent"),
+                        cursor="pointer",
+                        _hover={
+                            "color": styles.accent_text_color,
+                        },
+                        on_click=lambda: rx.redirect(
+                            f"/{routes.PROJECTS_ROUTE}/{item.id}/delete"
+                        ),
+                    ),
+                    None,
                 ),
                 width="100%",
                 padding="5px 0",
