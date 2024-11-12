@@ -5,6 +5,7 @@ from ..navigation import routes
 from ..backend import ProjectsState
 from .. import styles
 from ..forms.blog_post_form import blog_post_form_rows
+import reflex_local_auth as rxa
 
 
 @template(
@@ -12,6 +13,7 @@ from ..forms.blog_post_form import blog_post_form_rows
     title="Delete Project",
     on_load=ProjectsState.load_project,
 )
+@rxa.require_login
 def delete_project() -> rx.Component:
     return rx.vstack(
         rx.vstack(

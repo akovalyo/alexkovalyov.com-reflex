@@ -6,6 +6,7 @@ from ..backend import BlogPostState
 from .. import styles
 from ..forms.blog_post_form import blog_post_form_rows
 from ..components import page_title, alert_dialog
+import reflex_local_auth as rxa
 
 
 @template(
@@ -13,6 +14,7 @@ from ..components import page_title, alert_dialog
     title="Edit Blog Post",
     on_load=BlogPostState.get_blog_post,
 )
+@rxa.require_login
 def edit_blog_post() -> rx.Component:
     return rx.vstack(
         page_title("EDIT BLOG POST", padding_bottom="1em"),

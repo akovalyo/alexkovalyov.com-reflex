@@ -5,6 +5,7 @@ from ..navigation import routes
 from ..backend import ProjectsState
 from ..forms.project_form import project_form_rows
 from .. import styles
+import reflex_local_auth as rxa
 
 
 @template(
@@ -12,6 +13,7 @@ from .. import styles
     title="Add Project",
     on_load=ProjectsState.clear_current_project,
 )
+@rxa.require_login
 def add_project() -> rx.Component:
     return rx.vstack(
         rx.vstack(

@@ -5,6 +5,7 @@ from ..navigation import routes
 from ..backend import BlogPostState
 from .. import styles
 from ..forms.blog_post_form import blog_post_form_rows
+import reflex_local_auth as rxa
 
 
 @template(
@@ -12,6 +13,7 @@ from ..forms.blog_post_form import blog_post_form_rows
     title="Add Blog Post",
     on_load=BlogPostState.clear_current_blog_post,
 )
+@rxa.require_login
 def add_blog_post() -> rx.Component:
     return rx.vstack(
         rx.vstack(
