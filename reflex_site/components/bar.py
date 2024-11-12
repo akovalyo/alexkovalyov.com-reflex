@@ -6,7 +6,11 @@ import reflex_local_auth as rxa
 
 
 def social_link(icon: str, href: str) -> rx.Component:
-    return rx.link(rx.icon(icon), href=href)
+    return rx.link(
+        rx.icon(icon),
+        href=href,
+        is_external=True,
+    )
 
 
 def social_tab() -> rx.Component:
