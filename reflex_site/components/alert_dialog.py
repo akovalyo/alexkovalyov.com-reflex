@@ -1,5 +1,5 @@
 import reflex as rx
-from ..backend.state import BlogPostState
+from ..backend import BlogPostState
 
 
 def alert_dialog() -> rx.Component:

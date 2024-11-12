@@ -7,14 +7,14 @@ from ..components import button
 from ..components import page_title
 from ..forms.contact_form import contact_form_rows
 from ..backend.contact_state import ContactState
-from ..backend.state import State
+from ..backend import MainPageState
 from ..components import project_card, blog_card
 
 
 @template(
     route=routes.HOME_ROUTE,
     title="Home",
-    on_load=State.load_data_for_home_page,
+    on_load=MainPageState.load_data_for_home_page,
 )
 def index() -> rx.Component:
     return rx.vstack(
@@ -37,11 +37,10 @@ def index() -> rx.Component:
                 font_weight="400",
             ),
             rx.vstack(
-                rx.divider(margin_top="2rem"),
-                page_title("PROJECTS", padding_bottom="1em"),
+                page_title("PROJECTS", padding_bottom="1em", padding_top="2em"),
                 rx.flex(
                     rx.foreach(
-                        State.latest_projects,
+                        MainPageState.latest_projects,
                         lambda item: project_card(item),
                     ),
                     direction="row",
@@ -55,7 +54,7 @@ def index() -> rx.Component:
                 page_title("BLOG", padding_bottom="1em"),
                 rx.flex(
                     rx.foreach(
-                        State.latest_blog_posts,
+                        MainPageState.latest_blog_posts,
                         lambda item: blog_card(item),
                     ),
                     direction="row",

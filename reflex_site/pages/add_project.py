@@ -2,7 +2,7 @@ import reflex as rx
 
 from ..templates import template
 from ..navigation import routes
-from ..backend.state import ProjectsState
+from ..backend import ProjectsState
 from ..forms.project_form import project_form_rows
 from .. import styles
 

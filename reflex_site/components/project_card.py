@@ -1,6 +1,6 @@
 import reflex as rx
 from .. import styles
-from ..backend.models import Project
+from ..backend import Project
 from ..components import button
 from ..navigation import routes
 import reflex_local_auth as rxa

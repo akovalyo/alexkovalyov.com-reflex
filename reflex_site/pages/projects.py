@@ -3,7 +3,7 @@ from ..templates import template
 from ..navigation import routes
 
 from ..components import page_title
-from ..backend.state import ProjectsState
+from ..backend import ProjectsState
 from ..components import project_card
 
 

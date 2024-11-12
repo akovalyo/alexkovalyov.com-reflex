@@ -1,5 +1,5 @@
 import reflex as rx
-from ..backend.state import ProjectsState
+from ..backend import ProjectsState
 from .. import styles
 
 

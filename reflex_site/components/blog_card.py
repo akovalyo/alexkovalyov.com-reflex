@@ -1,6 +1,6 @@
 import reflex as rx
 from .. import styles
-from ..backend.state import BlogPost
+from ..backend import BlogPost
 from ..navigation import routes
 
 

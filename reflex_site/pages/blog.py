@@ -2,7 +2,7 @@ import reflex as rx
 
 from ..templates import template
 from ..navigation import routes
-from ..backend.state import BlogPostState
+from ..backend import BlogPostState
 from ..components import page_title, blog_card
 
 
