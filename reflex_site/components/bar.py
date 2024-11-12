@@ -1,8 +1,8 @@
 import reflex as rx
 from .. import styles
-from reflex.page import get_decorated_pages
 from ..navigation import routes
 from datetime import datetime
+import reflex_local_auth as rxa
 
 
 def social_link(icon: str, href: str) -> rx.Component:
@@ -55,42 +55,42 @@ def footer() -> rx.Component:
     )
 
 
-def menu_items():
-    return [
-        {
-            "title": "Home",
-            "path": routes.HOME_ROUTE,
-            "auth": False,
-        },
-        {
-            "title": "Projects",
-            "path": routes.PROJECTS_ROUTE,
-            "auth": False,
-        },
-        {
-            "title": "Blog",
-            "path": routes.BLOG_ROUTE,
-            "auth": False,
-        },
-        {
-            "title": "Add Project",
-            "path": routes.ADD_PROJECT_ROUT,
-            "auth": False,
-        },
-        {
-            "title": "Add Blog",
-            "path": routes.ADD_BLOG_POST_ROUT,
-            "auth": True,
-        },
-    ]
-
-
 def menu_item_icon(icon: str) -> rx.Component:
     return rx.icon(icon, size=20)
 
 
-def menu_item(text: str, url: str) -> rx.Component:
-    active = rx.State.router.page.path == url.lower()
+def logout_menu_item() -> rx.Component:
+    return rx.link(
+        rx.hstack(
+            menu_item_icon("log-out"),
+            rx.text("Log Out", size="4", weight="regular"),
+            color=styles.text_color,
+            style={
+                "_hover": {
+                    "background_color": styles.gray_bg_color,
+                    "color": styles.text_color,
+                    "opacity": "1",
+                },
+                "opacity": "0.95",
+            },
+            align="center",
+            border_radius=styles.border_radius,
+            width="100%",
+            spacing="2",
+            padding="0.35em",
+        ),
+        underline="none",
+        href=routes.HOME_ROUTE,
+        on_click=rxa.LocalAuthState.do_logout,
+        width="100%",
+    )
+
+
+def menu_item(text: str, url: str, active: bool = True) -> rx.Component:
+    if active:
+        active = rx.State.router.page.path == url.lower()
+    else:
+        active = False
 
     return rx.link(
         rx.hstack(
@@ -101,6 +101,7 @@ def menu_item(text: str, url: str) -> rx.Component:
                 ("Blog", menu_item_icon("notebook-text")),
                 ("Add Blog", menu_item_icon("list-plus")),
                 ("Add Project", menu_item_icon("folder-plus")),
+                ("Log In", menu_item_icon("log-in")),
             ),
             rx.text(text, size="4", weight="regular"),
             color=rx.cond(
@@ -140,8 +141,61 @@ def menu_item(text: str, url: str) -> rx.Component:
     )
 
 
+def menu_items() -> rx.Component:
+    public_items = [
+        {
+            "title": "Home",
+            "path": routes.HOME_ROUTE,
+        },
+        {
+            "title": "Projects",
+            "path": routes.PROJECTS_ROUTE,
+        },
+        {
+            "title": "Blog",
+            "path": routes.BLOG_ROUTE,
+        },
+    ]
+
+    auth_items = [
+        {
+            "title": "Add Project",
+            "path": routes.ADD_PROJECT_ROUT,
+        },
+        {
+            "title": "Add Blog",
+            "path": routes.ADD_BLOG_POST_ROUT,
+        },
+    ]
+
+    return rx.vstack(
+        *[
+            menu_item(
+                text=item["title"],
+                url=item["path"],
+            )
+            for item in public_items
+        ],
+        rx.divider(),
+        rx.cond(
+            rxa.LocalAuthState.is_authenticated,
+            rx.vstack(
+                *[
+                    menu_item(
+                        text=item["title"],
+                        url=item["path"],
+                    )
+                    for item in auth_items
+                ],
+                logout_menu_item(),
+            ),
+            menu_item(text="Log In", url=routes.LOGIN_ROUTE, active=False),
+        ),
+        width="100%",
+    )
+
+
 def navbar_menu_button() -> rx.Component:
-    items = menu_items()
     return rx.drawer.root(
         rx.drawer.trigger(
             rx.icon(
@@ -165,13 +219,7 @@ def navbar_menu_button() -> rx.Component:
                         width="100%",
                     ),
                     rx.divider(),
-                    *[
-                        menu_item(
-                            text=item["title"],
-                            url=item["path"],
-                        )
-                        for item in items
-                    ],
+                    menu_items(),
                     rx.spacer(),
                     footer(),
                     spacing="4",
@@ -196,7 +244,7 @@ def logo() -> rx.Component:
             rx.image(src="/ak_gray.svg", height="2em"),
             rx.image(src="/ak_white.svg", height="2em"),
         ),
-        on_click=rx.redirect(routes.HOME_ROUTE),
+        on_click=lambda: rx.redirect(routes.HOME_ROUTE),
         cursor="pointer",
     )
 
@@ -222,7 +270,6 @@ def navbar() -> rx.Component:
 
 
 def sidebar() -> rx.Component:
-    items = menu_items()
     return rx.flex(
         rx.vstack(
             rx.hstack(
@@ -235,17 +282,7 @@ def sidebar() -> rx.Component:
                 margin_bottom="1em",
             ),
             rx.flex(
-                rx.vstack(
-                    *[
-                        menu_item(
-                            text=item["title"],
-                            url=item["path"],
-                        )
-                        for item in items
-                    ],
-                    spacing="1",
-                    width="100%",
-                ),
+                menu_items(),
                 justify="end",
             ),
             rx.spacer(),

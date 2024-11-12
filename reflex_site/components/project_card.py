@@ -21,7 +21,9 @@ def project_card(item: Project) -> rx.Component:
                     _hover={
                         "color": styles.accent_text_color,
                     },
-                    on_click=rx.redirect(f"/{routes.PROJECTS_ROUTE}/{item.id}/delete"),
+                    on_click=lambda: rx.redirect(
+                        f"/{routes.PROJECTS_ROUTE}/{item.id}/delete"
+                    ),
                 ),
                 width="100%",
                 padding="5px 0",
