@@ -20,7 +20,7 @@ class ProjectsState(rx.State):
         )
 
     @rx.var(cache=True)
-    def _project_id(self):
+    def _project_id(self) -> str:
         return self.router.page.params.get("id", "")
 
     def clear_current_project(self):

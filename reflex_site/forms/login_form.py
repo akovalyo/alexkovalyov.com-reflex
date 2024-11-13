@@ -13,7 +13,7 @@ def login_form() -> rx.Component:
                     height="auto",
                 ),
                 rx.heading(
-                    "Sign in to your account",
+                    "Log In",
                     size="6",
                     as_="h2",
                     text_align="center",

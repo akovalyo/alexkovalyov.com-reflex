@@ -5,7 +5,11 @@ from ..backend import BlogPostState
 def alert_dialog() -> rx.Component:
     return rx.alert_dialog.root(
         rx.alert_dialog.trigger(
-            rx.button("Delete", color_scheme="tomato"),
+            rx.button(
+                "Delete",
+                color_scheme="tomato",
+                cursor="pointer",
+            ),
         ),
         rx.alert_dialog.content(
             rx.alert_dialog.title("Delete Blog Post"),
@@ -19,6 +23,7 @@ def alert_dialog() -> rx.Component:
                         "Cancel",
                         variant="soft",
                         color_scheme="gray",
+                        cursor="pointer",
                     ),
                 ),
                 rx.alert_dialog.action(
@@ -26,6 +31,7 @@ def alert_dialog() -> rx.Component:
                         "Delete",
                         color_scheme="tomato",
                         on_click=BlogPostState.delete_blog_post,
+                        cursor="pointer",
                     ),
                 ),
                 spacing="3",

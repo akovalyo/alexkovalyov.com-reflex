@@ -4,6 +4,8 @@ from ..navigation import routes
 from datetime import datetime
 import reflex_local_auth as rxa
 
+from ..backend import MainState
+
 
 def social_link(icon: str, href: str) -> rx.Component:
     return rx.link(
@@ -85,7 +87,13 @@ def logout_menu_item() -> rx.Component:
         ),
         underline="none",
         href=routes.HOME_ROUTE,
-        on_click=rxa.LocalAuthState.do_logout,
+        on_click=[
+            rxa.LocalAuthState.do_logout,
+            lambda: MainState.set_pending_callout(
+                "You have succesfully logged out",
+                False,
+            ),
+        ],
         width="100%",
     )
 

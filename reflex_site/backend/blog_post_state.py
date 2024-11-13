@@ -6,15 +6,19 @@ from ..navigation import routes
 from ..backend import proccess_form_data
 from datetime import datetime, timezone
 
+from ..backend import MainState
+import asyncio
+from .. import styles
 
-class BlogPostState(rx.State):
+
+class BlogPostState(MainState):
     blog_posts: List["BlogPost"] = []
     blog_post: BlogPost | None
     blog_post_content: str = ""
     blog_post_is_loading: bool = True
 
     @rx.var(cache=True)
-    def _blog_post_address(self):
+    def _blog_post_address(self) -> str:
         return self.router.page.params.get("address", "")
 
     @rx.var(cache=True)
@@ -81,7 +85,9 @@ class BlogPostState(rx.State):
             db_blogpost.content = db_content
             session.add(db_blogpost)
             session.commit()
-        self.clear_current_blog_post()
+            self.set_pending_callout("Blog post added.", False)
+            self.clear_current_blog_post()
+
         return rx.redirect(routes.BLOG_ROUTE)
 
     def edit_blog_post(self, form_data: dict):
@@ -93,11 +99,12 @@ class BlogPostState(rx.State):
                 for k, v in data.items():
                     setattr(res, k, v)
                 res.content.content = content
+                session.add(res)
+                session.commit()
+                self.set_pending_callout("Blog post updated.", False)
             else:
-                # TODO Change to show the error message
                 return rx.redirect("/404")
-            session.add(res)
-            session.commit()
+
             return rx.redirect(f"{routes.BLOG_ROUTE}/{self.blog_post.address}")
 
     def delete_blog_post(self):
@@ -107,6 +114,10 @@ class BlogPostState(rx.State):
                 session.delete(res.content)
                 session.delete(res)
                 session.commit()
+                self.set_pending_callout("Blog post deleted.", False)
+            else:
+                self.set_pending_callout(
+                    "Failed to delete the blogpost. Try again later."
+                )
             self.clear_current_blog_post()
-            # TODO Show confirmation messsage
             return rx.redirect(routes.BLOG_ROUTE)

@@ -4,7 +4,7 @@ from typing import List
 from sqlmodel import select
 
 
-class MainPageState(rx.State):
+class HomePageState(rx.State):
     latest_blog_posts: List["BlogPost"] = []
     latest_projects: List["Project"] = []
 

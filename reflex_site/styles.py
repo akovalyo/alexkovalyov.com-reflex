@@ -11,6 +11,8 @@ bar_color = rx.color("gray", 4)
 green_color = rx.color("grass", 10)
 sidebar_width = "32em"
 sidebar_content_width = "16em"
+callout_alert = "red"
+callout_green = "green"
 
 base_stylesheets = [
     "https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap",
