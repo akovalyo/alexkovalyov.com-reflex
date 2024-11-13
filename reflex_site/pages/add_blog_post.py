@@ -38,7 +38,7 @@ def add_blog_post() -> rx.Component:
                 rx.form(
                     blog_post_form_rows(),
                     on_submit=BlogPostState.add_blog_post,
-                    reset_on_submit=True,
+                    reset_on_submit=False,
                 ),
                 width=styles.form_max_width,
             ),

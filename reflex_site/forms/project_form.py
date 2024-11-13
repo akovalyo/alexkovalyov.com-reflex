@@ -105,6 +105,7 @@ def project_form_rows() -> rx.Component:
                 type="submit",
                 cursor="pointer",
                 background=styles.green_color,
+                loading=ProjectsState.loading,
             ),
             align="center",
         ),

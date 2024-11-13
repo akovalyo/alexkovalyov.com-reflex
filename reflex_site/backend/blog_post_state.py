@@ -1,14 +1,17 @@
 import reflex as rx
-from ..backend import BlogPost, BlogContent
 from typing import List
 from sqlmodel import select
 from ..navigation import routes
-from ..backend import proccess_form_data
+from ..backend import (
+    proccess_form_data,
+    get_error_message,
+    MainState,
+    BlogPost,
+    BlogContent,
+)
 from datetime import datetime, timezone
 
-from ..backend import MainState
-import asyncio
-from .. import styles
+# import inspect
 
 
 class BlogPostState(MainState):
@@ -78,46 +81,73 @@ class BlogPostState(MainState):
     def add_blog_post(self, form_data: dict):
         content = form_data["content"]
         data = proccess_form_data(form_data)
-
-        with rx.session() as session:
-            db_blogpost = BlogPost(**data)
-            db_content = BlogContent(content=content)
-            db_blogpost.content = db_content
-            session.add(db_blogpost)
-            session.commit()
-            self.set_pending_callout("Blog post added.", False)
-            self.clear_current_blog_post()
-
+        try:
+            self.loading = True
+            yield
+            with rx.session() as session:
+                db_blogpost = BlogPost(**data)
+                db_content = BlogContent(content=content)
+                db_blogpost.content = db_content
+                session.add(db_blogpost)
+                session.commit()
+                self.set_pending_callout("Blog post added.", False)
+                self.clear_current_blog_post()
+        except Exception as e:
+            print(get_error_message(e))
+            self.set_pending_callout("Something went wrong. Try again later.")
+            self.loading = False
+            yield
+            return rx.redirect(routes.BLOG_ROUTE)
+        self.loading = False
+        yield
         return rx.redirect(routes.BLOG_ROUTE)
 
     def edit_blog_post(self, form_data: dict):
         content = form_data["content"]
         data = proccess_form_data(form_data)
-        with rx.session() as session:
-            res = session.get(BlogPost, self.blog_post.id)
-            if res:
-                for k, v in data.items():
-                    setattr(res, k, v)
-                res.content.content = content
-                session.add(res)
-                session.commit()
-                self.set_pending_callout("Blog post updated.", False)
-            else:
-                return rx.redirect("/404")
-
-            return rx.redirect(f"{routes.BLOG_ROUTE}/{self.blog_post.address}")
+        self.loading = True
+        yield
+        try:
+            with rx.session() as session:
+                res = session.get(BlogPost, self.blog_post.id)
+                if res:
+                    for k, v in data.items():
+                        setattr(res, k, v)
+                    res.content.content = content
+                    session.add(res)
+                    session.commit()
+                    self.set_pending_callout("Blog post updated.", False)
+                else:
+                    self.loading = False
+                    yield
+                    return rx.redirect("/404")
+                self.loading = False
+                yield
+                return rx.redirect(f"{routes.BLOG_ROUTE}/{self.blog_post.address}")
+        except Exception as e:
+            print(get_error_message(e))
+            self.set_pending_callout()
+        self.loading = False
+        yield
+        return rx.redirect(routes.BLOG_ROUTE)
 
     def delete_blog_post(self):
-        with rx.session() as session:
-            res = session.get(BlogPost, self.blog_post.id)
-            if res:
-                session.delete(res.content)
-                session.delete(res)
-                session.commit()
-                self.set_pending_callout("Blog post deleted.", False)
-            else:
-                self.set_pending_callout(
-                    "Failed to delete the blogpost. Try again later."
-                )
+        try:
+            with rx.session() as session:
+                res = session.get(BlogPost, self.blog_post.id)
+                if res:
+                    session.delete(res.content)
+                    session.delete(res)
+                    session.commit()
+                    self.set_pending_callout("Blog post deleted.", False)
+                else:
+                    self.set_pending_callout(
+                        "Failed to delete the blogpost. Try again later."
+                    )
+                self.clear_current_blog_post()
+                return rx.redirect(routes.BLOG_ROUTE)
+        except Exception as e:
+            print(get_error_message(e))
+            self.set_pending_callout()
             self.clear_current_blog_post()
             return rx.redirect(routes.BLOG_ROUTE)

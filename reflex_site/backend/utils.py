@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+import inspect
 
 
 def convert_str_to_datetime(created_at: str) -> datetime:
@@ -28,3 +29,7 @@ def proccess_form_data(form_data: dict) -> dict:
 
 def get_time() -> datetime:
     return datetime.now(timezone.utc)
+
+
+def get_error_message(e: str) -> str:
+    return f"ERROR in {inspect.stack()[1][3]}: {e}"

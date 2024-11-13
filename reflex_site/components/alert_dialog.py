@@ -1,5 +1,5 @@
 import reflex as rx
-from ..backend import BlogPostState
+from ..backend import BlogPostState, MainState
 
 
 def alert_dialog() -> rx.Component:
@@ -24,6 +24,7 @@ def alert_dialog() -> rx.Component:
                         variant="soft",
                         color_scheme="gray",
                         cursor="pointer",
+                        loading=MainState.loading,
                     ),
                 ),
                 rx.alert_dialog.action(
@@ -32,6 +33,7 @@ def alert_dialog() -> rx.Component:
                         color_scheme="tomato",
                         on_click=BlogPostState.delete_blog_post,
                         cursor="pointer",
+                        loading=MainState.loading,
                     ),
                 ),
                 spacing="3",

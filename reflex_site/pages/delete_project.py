@@ -2,9 +2,8 @@ import reflex as rx
 
 from ..templates import template
 from ..navigation import routes
-from ..backend import ProjectsState
+from ..backend import ProjectsState, MainState
 from .. import styles
-from ..forms.blog_post_form import blog_post_form_rows
 import reflex_local_auth as rxa
 
 
@@ -45,12 +44,14 @@ def delete_project() -> rx.Component:
                     "Yes",
                     on_click=ProjectsState.delete_project,
                     cursor="pointer",
+                    loading=MainState.loading,
                 ),
                 rx.button(
                     "No",
                     on_click=ProjectsState.cancel_delete_project,
                     background=styles.green_color,
                     cursor="pointer",
+                    loading=MainState.loading,
                 ),
                 width="100%",
                 justify="center",

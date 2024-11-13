@@ -1,5 +1,5 @@
 import reflex as rx
-from ..backend.contact_state import ContactState
+from ..backend import MainState
 from .. import styles
 
 
@@ -23,6 +23,7 @@ def contact_form_rows() -> rx.Component:
         rx.button(
             "Submit",
             type="submit",
+            loading=MainState.loading,
             **styles.button_style,
         ),
         align="center",

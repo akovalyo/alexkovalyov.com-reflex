@@ -3,11 +3,11 @@ from ..backend import Project
 from typing import List
 from sqlmodel import select
 from ..navigation import routes
-from ..backend.utils import proccess_form_data
+from ..backend import proccess_form_data, get_error_message, MainState
 from datetime import datetime, timezone
 
 
-class ProjectsState(rx.State):
+class ProjectsState(MainState):
     projects: List["Project"] = []
     current_project: Project | None
 
@@ -35,11 +35,20 @@ class ProjectsState(rx.State):
 
     def add_project(self, form_data: dict):
         data = proccess_form_data(form_data)
-        with rx.session() as session:
-            db_entry = Project(**data)
-            session.add(db_entry)
-            session.commit()
+        self.loading = True
+        yield
+        try:
+            with rx.session() as session:
+                db_entry = Project(**data)
+                session.add(db_entry)
+                session.commit()
+                self.set_pending_callout("Project added", False)
+        except Exception as e:
+            print(get_error_message(e))
+            self.set_pending_callout()
         self.clear_current_project()
+        self.loading = False
+        yield
         return rx.redirect(routes.PROJECTS_ROUTE)
 
     def load_project(self):
@@ -53,16 +62,28 @@ class ProjectsState(rx.State):
             self.current_project = res
 
     def delete_project(self):
-        with rx.session() as session:
-            if self.current_project:
-                res = session.get(Project, self.current_project.id)
-                if res:
-                    session.delete(res)
-                    session.commit()
-
-        self.current_project = None
+        self.loading = True
+        yield
+        try:
+            with rx.session() as session:
+                if self.current_project:
+                    res = session.get(Project, self.current_project.id)
+                    if res:
+                        session.delete(res)
+                        session.commit()
+                        self.set_pending_callout("project deleted", False)
+        except Exception as e:
+            print(get_error_message(e))
+            self.set_pending_callout()
+        self.clear_current_project()
+        self.loading = False
+        yield
         return rx.redirect(routes.PROJECTS_ROUTE)
 
     def cancel_delete_project(self):
-        self.current_project = None
+        self.loading = True
+        yield
+        self.clear_current_project()
+        self.loading = False
+        yield
         return rx.redirect(routes.PROJECTS_ROUTE)

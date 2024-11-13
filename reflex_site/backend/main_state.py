@@ -14,6 +14,7 @@ class MainState(rx.State):
     callout: Callout | None
     pending_callout: Callout | None
     running: bool = False
+    loading: bool = False
 
     async def check_callout(self):
         if self.pending_callout and not self.running:

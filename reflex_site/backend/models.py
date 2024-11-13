@@ -1,8 +1,10 @@
 import reflex as rx
 from datetime import datetime, timezone
 import sqlalchemy
-from sqlmodel import Field, Relationship
+from sqlmodel import Field, Relationship, TEXT
 from typing import Optional
+
+# from sqlalchemy.dialects.postgresql import TEXT
 
 
 class BlogPost(rx.Model, table=True):
@@ -20,7 +22,7 @@ class BlogPost(rx.Model, table=True):
 
 
 class BlogContent(rx.Model, table=True):
-    content: str
+    content: str = Field(sa_column=sqlalchemy.Column(TEXT))
     blogpost_id: int = Field(foreign_key="blogpost.id")
 
 
