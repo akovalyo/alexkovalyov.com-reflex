@@ -6,6 +6,7 @@ from ..backend import BlogPostState
 from .. import styles
 from ..components import page_title
 from ..components import button
+import reflex_local_auth as rxa
 
 
 def blog_post_loading() -> rx.Component:
@@ -54,10 +55,13 @@ def blog_post() -> rx.Component:
             ),
             rx.vstack(
                 rx.box(
-                    button(
-                        "Edit",
-                        f"{routes.BLOG_ROUTE}/{BlogPostState.blog_post.address}/edit",
-                        padding="20px",
+                    rx.cond(
+                        rxa.LocalAuthState.is_authenticated,
+                        button(
+                            "Edit",
+                            f"{routes.BLOG_ROUTE}/{BlogPostState.blog_post.address}/edit",
+                            padding="20px",
+                        ),
                     ),
                     padding_top="1em",
                 ),
