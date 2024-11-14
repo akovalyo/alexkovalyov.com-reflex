@@ -2,6 +2,7 @@
 *.db
 *.py[cod]
 rxconfig.py
+admin.py
 .venv
 .web
 __pycache__/

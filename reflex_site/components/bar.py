@@ -114,6 +114,7 @@ def menu_item(text: str, url: str, active: bool = True) -> rx.Component:
                 ("Add Blog", menu_item_icon("list-plus")),
                 ("Add Project", menu_item_icon("folder-plus")),
                 ("Log In", menu_item_icon("log-in")),
+                ("Admin", menu_item_icon("lock")),
             ),
             rx.text(text, size="4", weight="regular"),
             color=rx.cond(
@@ -177,6 +178,10 @@ def menu_items() -> rx.Component:
         {
             "title": "Add Blog",
             "path": routes.ADD_BLOG_POST_ROUT,
+        },
+        {
+            "title": "Admin",
+            "path": routes.ADMIN_ROUTE,
         },
     ]
 
