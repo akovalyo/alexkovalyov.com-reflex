@@ -6,7 +6,7 @@ from ..navigation import routes
 from ..components import button
 from ..components import page_title
 from ..forms.contact_form import contact_form_rows
-from ..backend.contact_state import ContactState
+from ..backend import ContactState
 from ..backend import HomePageState
 from ..components import project_card, blog_card
 

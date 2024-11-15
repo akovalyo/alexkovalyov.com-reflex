@@ -44,7 +44,7 @@ class Project(rx.Model, table=True):
 
 class ContactMessage(rx.Model, table=True):
     email: str
-    message: str
+    message: str = Field(sa_column=sqlalchemy.Column(TEXT))
     created_at: datetime = Field(
         default_factory=datetime.now(timezone.utc),
         sa_type=sqlalchemy.DateTime(timezone=True),
