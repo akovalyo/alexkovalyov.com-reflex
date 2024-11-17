@@ -6,6 +6,7 @@ from ..backend import (
     Project,
     ContactState,
     ContactMessage,
+    AdminState,
     proccess_form_data,
     get_error_message,
 )
@@ -15,56 +16,6 @@ from ..components import page_title
 import reflex_local_auth as rxa
 from ..db.db import db_projects
 from sqlmodel import select
-
-
-class AdminState(MainState):
-    contact_messages: list[ContactMessage] = []
-    admin_loading: bool = False
-
-    def upload_projects(self):
-        self.loading = True
-        yield
-        try:
-            with rx.session() as session:
-                for item in db_projects:
-                    data = proccess_form_data(item)
-                    db_entry = Project(**data)
-                    session.add(db_entry)
-                    session.commit()
-                    self.set_pending_callout("Projects uploaded", False)
-        except Exception as e:
-            print(get_error_message(e))
-            self.set_pending_callout()
-        self.loading = False
-        yield
-        return rx.redirect(routes.ADMIN_ROUTE)
-
-    def load_contact_messages(self):
-        try:
-            with rx.session() as session:
-                res = session.exec(
-                    select(ContactMessage).order_by(ContactMessage.created_at)
-                ).all()
-                self.contact_messages = res
-        except Exception as e:
-            print(get_error_message(e))
-
-    def delete_message(self, id: int):
-        try:
-            self.admin_loading = True
-            yield
-            with rx.session() as session:
-                res = session.get(ContactMessage, id)
-                if res:
-                    session.delete(res)
-                    session.commit()
-                    self.set_pending_callout("Message deleted", False)
-        except Exception as e:
-            print(get_error_message(e))
-            self.pending_callout()
-        self.admin_loading = False
-        yield
-        return rx.redirect(routes.ADMIN_ROUTE)
 
 
 def upload_projects_dialog() -> rx.Component:

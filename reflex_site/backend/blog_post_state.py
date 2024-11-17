@@ -9,7 +9,9 @@ from ..backend import (
     BlogPost,
     BlogContent,
 )
+from .. import styles
 from datetime import datetime, timezone
+import time
 
 # import inspect
 
@@ -81,26 +83,26 @@ class BlogPostState(MainState):
     def add_blog_post(self, form_data: dict):
         content = form_data["content"]
         data = proccess_form_data(form_data)
+        self.loading = True
+        yield
         try:
-            self.loading = True
-            yield
+
             with rx.session() as session:
                 db_blogpost = BlogPost(**data)
                 db_content = BlogContent(content=content)
                 db_blogpost.content = db_content
                 session.add(db_blogpost)
                 session.commit()
-                self.set_pending_callout("Blog post added.", False)
                 self.clear_current_blog_post()
-        except Exception as e:
-            print(get_error_message(e))
-            self.set_pending_callout("Something went wrong. Try again later.")
             self.loading = False
             yield
+            self.set_pending_callout("Blog post added", False)
             return rx.redirect(routes.BLOG_ROUTE)
-        self.loading = False
-        yield
-        return rx.redirect(routes.BLOG_ROUTE)
+        except Exception as e:
+            print(get_error_message(e))
+            self.loading = False
+            yield rx.toast.error("Failed to save the blog post. Try again later.")
+            return
 
     def edit_blog_post(self, form_data: dict):
         content = form_data["content"]
@@ -116,20 +118,17 @@ class BlogPostState(MainState):
                     res.content.content = content
                     session.add(res)
                     session.commit()
-                    self.set_pending_callout("Blog post updated.", False)
+                    self.loading = False
+                    yield rx.toast.success("Blog post updated")
+                    return
                 else:
                     self.loading = False
                     yield
                     return rx.redirect("/404")
-                self.loading = False
-                yield
-                return rx.redirect(f"{routes.BLOG_ROUTE}/{self.blog_post.address}")
         except Exception as e:
             print(get_error_message(e))
-            self.set_pending_callout()
-        self.loading = False
-        yield
-        return rx.redirect(routes.BLOG_ROUTE)
+            self.loading = False
+            yield rx.toast.error("Failed to update the blog post. Try again later.")
 
     def delete_blog_post(self):
         try:
@@ -140,14 +139,16 @@ class BlogPostState(MainState):
                     session.delete(res)
                     session.commit()
                     self.set_pending_callout("Blog post deleted.", False)
+                    self.clear_current_blog_post()
+                    return rx.redirect(routes.BLOG_ROUTE)
                 else:
-                    self.set_pending_callout(
-                        "Failed to delete the blogpost. Try again later."
+                    # self.loading = False
+                    yield rx.toast.error(
+                        "Failed to delete the blog post. Try again later."
                     )
-                self.clear_current_blog_post()
-                return rx.redirect(routes.BLOG_ROUTE)
         except Exception as e:
             print(get_error_message(e))
+            # self.loading = False
             self.set_pending_callout()
             self.clear_current_blog_post()
             return rx.redirect(routes.BLOG_ROUTE)

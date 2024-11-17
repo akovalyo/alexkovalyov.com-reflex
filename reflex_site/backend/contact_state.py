@@ -16,13 +16,9 @@ class ContactState(MainState):
                 db_entry = ContactMessage(**form_data)
                 session.add(db_entry)
                 session.commit()
-                self.set_pending_callout(
-                    "Your message has been submitted successfully.", False
-                )
-
+            self.loading = False
+            yield rx.toast.success("Your message has been submitted successfully.")
         except Exception as e:
             print(get_error_message(e))
-            self.set_pending_callout()
-        self.loading = False
-        yield
-        return rx.redirect(routes.HOME_ROUTE)
+            self.loading = False
+            yield rx.toast.error("Something went wrong. Try again later.")

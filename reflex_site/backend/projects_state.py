@@ -42,14 +42,14 @@ class ProjectsState(MainState):
                 db_entry = Project(**data)
                 session.add(db_entry)
                 session.commit()
-                self.set_pending_callout("Project added", False)
+            self.loading = False
+            yield
+            self.set_pending_callout("Project added", False)
+            return rx.redirect(routes.PROJECTS_ROUTE)
         except Exception as e:
             print(get_error_message(e))
-            self.set_pending_callout()
-        self.clear_current_project()
-        self.loading = False
-        yield
-        return rx.redirect(routes.PROJECTS_ROUTE)
+            self.loading = False
+            yield rx.toast.error("Failed to add the project. Try again later.")
 
     def load_project(self):
         with rx.session() as session:
@@ -71,7 +71,7 @@ class ProjectsState(MainState):
                     if res:
                         session.delete(res)
                         session.commit()
-                        self.set_pending_callout("project deleted", False)
+                        self.set_pending_callout("Project deleted", False)
         except Exception as e:
             print(get_error_message(e))
             self.set_pending_callout()

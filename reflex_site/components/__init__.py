@@ -4,6 +4,7 @@ from .alert_dialog import alert_dialog
 from .bar import navbar, sidebar, social_tab
 from .project_card import project_card
 from .blog_card import blog_card
+from .toast import toast
 
 __all__ = [
     "button",

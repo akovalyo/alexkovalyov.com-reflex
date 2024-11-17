@@ -35,7 +35,7 @@ def add_project() -> rx.Component:
             rx.form(
                 project_form_rows(),
                 on_submit=ProjectsState.add_project,
-                reset_on_submit=True,
+                reset_on_submit=False,
             ),
             width=[
                 "75vw",

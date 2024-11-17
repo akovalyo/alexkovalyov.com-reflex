@@ -30,52 +30,6 @@ def template(
                     sidebar(),
                     rx.flex(
                         rx.vstack(
-                            rx.cond(
-                                MainState.callout,
-                                rx.flex(
-                                    rx.box(
-                                        rx.hstack(
-                                            rx.icon(
-                                                "info",
-                                                size=20,
-                                                margin_right="5px",
-                                            ),
-                                            MainState.callout.message,
-                                            width="100%",
-                                            align="center",
-                                            justify="center",
-                                            gap="0",
-                                            padding="0.75em 0",
-                                        ),
-                                        border_radius=styles.border_radius,
-                                        width="100%",
-                                        background_color=MainState.callout.color,
-                                        style={
-                                            "opacity": "0.8",
-                                            "color": "white",
-                                            "animation": "reveal 0.3s ease both",
-                                            "@keyframes reveal": {
-                                                "0%": {
-                                                    "opacity": "0",
-                                                    "transform": "scale(0)",
-                                                },
-                                                "100%": {
-                                                    "opacity": "0.8",
-                                                    "transform": "scale(1)",
-                                                },
-                                            },
-                                        },
-                                    ),
-                                    align="center",
-                                    justify="center",
-                                    width="50vw",
-                                    style={
-                                        "position": "fixed",
-                                        "bottom": "2em",
-                                        "z_index": "6",
-                                    },
-                                ),
-                            ),
                             page_content(),
                             width="100%",
                             **styles.template_content_style,

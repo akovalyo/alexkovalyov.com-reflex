@@ -8,4 +8,5 @@ from .pages import *
 app = rx.App(
     style=styles.base_style,
     stylesheets=styles.base_stylesheets,
+    overlay_component=rx.toast.provider(close_button=True),
 )
