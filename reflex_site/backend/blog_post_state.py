@@ -59,6 +59,8 @@ class BlogPostState(MainState):
         self.blog_post.content.content = value
 
     def load_blog_posts(self):
+        self.blog_post_is_loading = True
+        self.clear_current_blog_post()
         with rx.session() as session:
             res = session.exec(
                 select(BlogPost).order_by(BlogPost.created_at.desc())
@@ -81,10 +83,10 @@ class BlogPostState(MainState):
             self.blog_post_is_loading = False
 
     def add_blog_post(self, form_data: dict):
-        content = form_data["content"]
-        data = proccess_form_data(form_data)
         self.loading = True
         yield
+        content = form_data["content"]
+        data = proccess_form_data(form_data)
         try:
 
             with rx.session() as session:

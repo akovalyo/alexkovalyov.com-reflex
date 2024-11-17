@@ -28,7 +28,7 @@ def upload_projects_dialog() -> rx.Component:
             ),
         ),
         rx.alert_dialog.content(
-            rx.alert_dialog.title("Upload Projects to Database"),
+            rx.alert_dialog.title("Upload Projects to the Database"),
             rx.alert_dialog.description(
                 "Are you sure you want to upload all projects?",
                 size="2",
@@ -48,6 +48,48 @@ def upload_projects_dialog() -> rx.Component:
                         "Upload",
                         color_scheme="grass",
                         on_click=AdminState.upload_projects,
+                        cursor="pointer",
+                        loading=MainState.loading,
+                    ),
+                ),
+                spacing="3",
+                justify="end",
+            ),
+            style={"max_width": 500},
+        ),
+    )
+
+
+def upload_blog_dialog() -> rx.Component:
+    return rx.alert_dialog.root(
+        rx.alert_dialog.trigger(
+            rx.button(
+                "Upload",
+                color_scheme="grass",
+                cursor="pointer",
+            ),
+        ),
+        rx.alert_dialog.content(
+            rx.alert_dialog.title("Upload Blog Posts to the Database"),
+            rx.alert_dialog.description(
+                "Are you sure you want to upload all blog posts?",
+                size="2",
+            ),
+            rx.flex(
+                rx.alert_dialog.cancel(
+                    rx.button(
+                        "Cancel",
+                        variant="soft",
+                        color_scheme="gray",
+                        cursor="pointer",
+                        loading=MainState.loading,
+                    ),
+                ),
+                rx.alert_dialog.action(
+                    rx.button(
+                        "Upload",
+                        color_scheme="grass",
+                        on_click=AdminState.upload_blog,
                         cursor="pointer",
                         loading=MainState.loading,
                     ),
@@ -113,8 +155,11 @@ def admin() -> rx.Component:
             width=styles.blog_post_content_width,
         ),
         rx.divider(),
-        rx.heading("Upload Projects to Database"),
+        rx.heading("Upload Projects to the  Database"),
         upload_projects_dialog(),
+        rx.divider(),
+        rx.heading("Upload Blog Posts to the Database"),
+        upload_blog_dialog(),
         align="center",
         justify="center",
         width="100%",
