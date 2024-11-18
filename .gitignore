@@ -1,8 +1,8 @@
 
 *.db
 *.py[cod]
-rxconfig.py
 .venv
+.env
 .web
 __pycache__/
 assets/external/
