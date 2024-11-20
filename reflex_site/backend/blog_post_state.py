@@ -22,7 +22,7 @@ class BlogPostState(MainState):
     blog_post_content: str = ""
     blog_post_is_loading: bool = True
 
-    @rx.var(cache=True)
+    @rx.var()
     def _blog_post_address(self) -> str:
         return self.router.page.params.get("address", "")
 
