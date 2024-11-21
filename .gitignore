@@ -6,5 +6,6 @@
 .web
 __pycache__/
 assets/external/
-
+docker-compose.yml
+docker-compose-cert.yml
 db/
