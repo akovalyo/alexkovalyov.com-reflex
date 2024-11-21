@@ -9,3 +9,6 @@ assets/external/
 docker-compose.yml
 docker-compose-cert.yml
 db/
+docker-compose-dev.yml
+dev.Dockerfile
+nginx-dev.conf
