@@ -38,7 +38,7 @@ def blog_post_loading() -> rx.Component:
 
 
 @template(
-    route="/blog/[address]",
+    route=f"{routes.BLOG_ROUTE}/[address]",
     title="Blog",
     on_load=BlogPostState.get_blog_post,
 )

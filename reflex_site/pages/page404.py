@@ -2,14 +2,9 @@ import reflex as rx
 
 from ..templates import template
 from ..navigation import routes
-from ..backend import MainState
 
 
-@template(
-    route=routes.PAGE_404_ROUTE,
-    title="404",
-)
-def page404() -> rx.Component:
+def page404_content():
     return rx.vstack(
         rx.vstack(
             rx.heading(
@@ -37,3 +32,11 @@ def page404() -> rx.Component:
         height="100%",
         width="100%",
     )
+
+
+@template(
+    route=routes.PAGE_404_ROUTE,
+    title="404",
+)
+def page404() -> rx.Component:
+    return page404_content()
