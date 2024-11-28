@@ -4,14 +4,4 @@ from .alert_dialog import alert_dialog
 from .bar import navbar, sidebar, social_tab
 from .project_card import project_card
 from .blog_card import blog_card
-
-__all__ = [
-    "button",
-    "page_title",
-    "alert_dialog",
-    "navbar",
-    "sidebar",
-    "social_tab",
-    "project_card",
-    "blog_card",
-]
+from .react_zoom import react_zoom

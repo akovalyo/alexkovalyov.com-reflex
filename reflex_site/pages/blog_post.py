@@ -4,8 +4,7 @@ from ..templates import template
 from ..navigation import routes
 from ..backend import BlogPostState
 from .. import styles
-from ..components import page_title
-from ..components import button
+from ..components import page_title, button, react_zoom
 import reflex_local_auth as rxa
 
 
@@ -34,6 +33,21 @@ def blog_post_loading() -> rx.Component:
         width="100%",
         align="center",
         gap="0",
+    )
+
+
+def content_cond(item: dict) -> rx.Component:
+    return rx.cond(
+        item["type"] == "img",
+        react_zoom(
+            rx.image(src=item["value"], width=item["width"]),
+            backgroundColor="#db114b",
+        ),
+        rx.markdown(
+            item["value"],
+            component_map=styles.markdown_style,
+            width="100%",
+        ),
     )
 
 
@@ -79,11 +93,12 @@ def blog_post() -> rx.Component:
                     size="5",
                     font_weight="300",
                 ),
-                rx.markdown(
-                    BlogPostState.blog_post_content,
-                    component_map=styles.markdown_style,
-                    width="100%",
-                ),
+                rx.foreach(BlogPostState.blog_post_content, content_cond),
+                # rx.markdown(
+                #     BlogPostState.blog_post_content,
+                #     component_map=styles.markdown_style,
+                #     width="100%",
+                # ),
                 width=styles.blog_post_content_width,
                 align="center",
             ),

@@ -1,5 +1,5 @@
 import reflex as rx
-from typing import List
+from typing import List, Dict
 from sqlmodel import select
 from ..navigation import routes
 from ..backend import (
@@ -9,17 +9,14 @@ from ..backend import (
     BlogPost,
     BlogContent,
 )
-from .. import styles
 from datetime import datetime, timezone
-import time
-
-# import inspect
+import re
 
 
 class BlogPostState(MainState):
     blog_posts: List["BlogPost"] = []
     blog_post: BlogPost | None
-    blog_post_content: str = ""
+    blog_post_content: List[dict] = []
     blog_post_is_loading: bool = True
 
     @rx.var()
@@ -78,8 +75,29 @@ class BlogPostState(MainState):
             ).one_or_none()
             if not res:
                 return rx.redirect(routes.PAGE_404_ROUTE)
+            pattern = r"(<img[^>]+/>)"
+            split_content = re.split(pattern, res.content.content)
+            split_content_list = []
+            for i in split_content:
+                entry = {
+                    "type": "markdown",
+                    "value": i,
+                    "width": "200px",
+                }
+                if "<img" in i and "nozoom" not in i:
+                    entry["type"] = "img"
+                    pattern_image = r"src=\"([^\"]+)\""
+                    match = re.search(pattern_image, i)
+                    if match:
+                        entry["value"] = match.group(1)
+                        pattern_width = r"width=\"([^\"]+)\""
+                        match_width = re.search(pattern_width, i)
+                        if match_width:
+                            entry["width"] = match_width.group(1)
+                split_content_list.append(entry)
+
             self.blog_post = res
-            self.blog_post_content = res.content.content
+            self.blog_post_content = split_content_list
             self.blog_post_is_loading = False
 
     def add_blog_post(self, form_data: dict):
