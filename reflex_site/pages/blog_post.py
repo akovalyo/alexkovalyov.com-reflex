@@ -41,7 +41,6 @@ def content_cond(item: dict) -> rx.Component:
         item["type"] == "img",
         react_zoom(
             rx.image(src=item["value"], width=item["width"]),
-            backgroundColor="#db114b",
         ),
         rx.markdown(
             item["value"],
@@ -94,11 +93,6 @@ def blog_post() -> rx.Component:
                     font_weight="300",
                 ),
                 rx.foreach(BlogPostState.blog_post_content, content_cond),
-                # rx.markdown(
-                #     BlogPostState.blog_post_content,
-                #     component_map=styles.markdown_style,
-                #     width="100%",
-                # ),
                 width=styles.blog_post_content_width,
                 align="center",
             ),

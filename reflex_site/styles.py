@@ -16,7 +16,7 @@ callout_green = "green"
 
 base_stylesheets = [
     "https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap",
-    "styles.css",
+    "css/styles.css",
 ]
 base_style = {
     "font_family": "Oswald",
