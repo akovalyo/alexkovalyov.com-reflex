@@ -11,6 +11,66 @@ from ..backend import HomePageState
 from ..components import project_card, blog_card
 
 
+def project_tiles_loading() -> rx.Component:
+    return rx.flex(
+        rx.skeleton(
+            rx.box(
+                width=styles.card_project_width,
+                height="400px",
+                border=styles.border,
+                border_radius="15px",
+            ),
+        ),
+        rx.skeleton(
+            rx.box(
+                width=styles.card_project_width,
+                height="400px",
+                border=styles.border,
+                border_radius="15px",
+            ),
+        ),
+        rx.skeleton(
+            rx.box(
+                width=styles.card_project_width,
+                height="400px",
+                border=styles.border,
+                border_radius="15px",
+            ),
+        ),
+        direction="row",
+        wrap="wrap",
+        spacing="6",
+        justify="center",
+        align="center",
+    )
+
+
+def blog_post_tiles_loading() -> rx.Component:
+    return rx.flex(
+        rx.skeleton(
+            rx.box(
+                width=styles.card_blog_width,
+                height="200px",
+                border=styles.border,
+                border_radius="15px",
+            ),
+        ),
+        rx.skeleton(
+            rx.box(
+                width=styles.card_blog_width,
+                height="200px",
+                border=styles.border,
+                border_radius="15px",
+            ),
+        ),
+        direction="row",
+        wrap="wrap",
+        spacing="6",
+        justify="center",
+        align="center",
+    )
+
+
 @template(
     route=routes.HOME_ROUTE,
     title="Home",
@@ -38,30 +98,38 @@ def index() -> rx.Component:
             ),
             rx.vstack(
                 page_title("PROJECTS", padding_bottom="1em", padding_top="2em"),
-                rx.flex(
-                    rx.foreach(
-                        HomePageState.latest_projects,
-                        lambda item: project_card(item),
+                rx.cond(
+                    HomePageState.loading,
+                    project_tiles_loading(),
+                    rx.flex(
+                        rx.foreach(
+                            HomePageState.latest_projects,
+                            lambda item: project_card(item),
+                        ),
+                        direction="row",
+                        wrap="wrap",
+                        spacing="6",
+                        justify="center",
+                        align="center",
                     ),
-                    direction="row",
-                    wrap="wrap",
-                    spacing="6",
-                    justify="center",
-                    align="center",
                 ),
                 button("All", routes.PROJECTS_ROUTE),
                 rx.divider(),
                 page_title("BLOG", padding_bottom="1em"),
-                rx.flex(
-                    rx.foreach(
-                        HomePageState.latest_blog_posts,
-                        lambda item: blog_card(item),
+                rx.cond(
+                    HomePageState.loading,
+                    blog_post_tiles_loading(),
+                    rx.flex(
+                        rx.foreach(
+                            HomePageState.latest_blog_posts,
+                            lambda item: blog_card(item),
+                        ),
+                        direction="row",
+                        wrap="wrap",
+                        spacing="6",
+                        justify="center",
+                        align="center",
                     ),
-                    direction="row",
-                    wrap="wrap",
-                    spacing="6",
-                    justify="center",
-                    align="center",
                 ),
                 button("All", routes.BLOG_ROUTE),
                 rx.divider(),
