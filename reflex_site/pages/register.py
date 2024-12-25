@@ -8,7 +8,7 @@ from ..forms.register_form import register_form
 
 @template(
     route=routes.REGISTER_ROUTE,
-    title="Login",
+    title="Register",
 )
 def register() -> rx.Component:
     return rx.vstack(

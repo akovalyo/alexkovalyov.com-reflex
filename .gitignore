@@ -12,3 +12,6 @@ db/
 docker-compose-dev.yml
 dev.Dockerfile
 nginx-dev.conf
+alembic/
+alembic.ini
+*.db

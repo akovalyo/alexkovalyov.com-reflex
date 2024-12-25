@@ -1,9 +1,12 @@
 FROM python:3.12 AS builder
 
+
+
 WORKDIR /app
 
 COPY . .
 ENV API_URL=https://alexkovalyov.com
+
 RUN pip install -r requirements.txt
 RUN reflex export --frontend-only --no-zip
 

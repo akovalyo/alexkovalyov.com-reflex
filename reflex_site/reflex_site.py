@@ -11,7 +11,7 @@ app = rx.App(
     stylesheets=styles.base_stylesheets,
     overlay_component=rx.toast.provider(close_button=True),
 )
-app.add_custom_404_page(
+app.add_page(
     rx.theme(
         rx.flex(
             navbar(),
@@ -37,5 +37,6 @@ app.add_custom_404_page(
         gray_color=ThemeState.gray_color,
         radius=ThemeState.radius,
         scaling=ThemeState.scaling,
-    )
+    ),
+    route="/404",
 )

@@ -1,6 +1,7 @@
 import reflex as rx
 import reflex_local_auth as rxa
 from .. import styles
+from ..backend import AuthState
 
 
 def register_form() -> rx.Component:
@@ -30,8 +31,10 @@ def register_form() -> rx.Component:
             rxa.pages.components.input_100w("password", type="password"),
             rx.text("Confirm Password"),
             rxa.pages.components.input_100w("confirm_password", type="password"),
+            rx.text("Registration Code"),
+            rxa.pages.components.input_100w("code", type="password"),
             rx.button("Sign up", width="100%"),
             width=styles.form_max_width,
         ),
-        on_submit=rxa.registration.RegistrationState.handle_registration,
+        on_submit=AuthState.handle_registration,
     )

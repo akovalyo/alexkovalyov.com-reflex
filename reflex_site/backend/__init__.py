@@ -8,3 +8,4 @@ from .home_page_state import HomePageState
 from .theme_state import ThemeState
 from .contact_state import ContactState
 from .admin_state import AdminState
+from .auth_state import AuthState
